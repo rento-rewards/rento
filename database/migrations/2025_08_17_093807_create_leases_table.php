@@ -18,12 +18,15 @@ return new class extends Migration
             $table->text('address_line_2')->nullable();
             $table->text('city');
             $table->text('province');
+            $table->text('postal_code');
+            // Default country to Canada
+            // This can be changed later if needed
             $table->text('country')->default('Canada');
 
             // Lease Information
-            $table->decimal('rent_amount', 10, 2);
+            $table->integer('rent_amount');
             $table->date('lease_start_date');
-            $table->integer('monthly_due_date')->default(1);
+            $table->integer('monthly_due_date');
 
             // Landlord Information
             $table->text('landlord_name');
@@ -31,7 +34,8 @@ return new class extends Migration
             $table->text('landlord_phone');
 
             // Tenant
-            $table->foreignId('user_id');
+            $table->foreignId('tenant_id')->nullable()->constrained(table: 'users')->nullOnDelete();
+            $table->index(['tenant_id']);
 
             $table->timestamps();
         });
