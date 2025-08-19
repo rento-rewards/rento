@@ -36,6 +36,10 @@ class RegisteredUserController extends Controller
             'date_of_birth' => 'required|date|before:15 years',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'date_of_birth.before' => 'You must be at least 15 years old to register.',
+            'email.unique' => 'This email address is already registered.',
+            'email.lowercase' => 'Email must be in lowercase.',
         ]);
 
         $user = User::create([
