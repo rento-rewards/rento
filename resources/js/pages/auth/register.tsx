@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import DateOfBirthInput from '@/components/date-of-birth-input';
 
 export default function Register() {
     return (
@@ -22,19 +23,48 @@ export default function Register() {
                 {({ processing, errors }) => (
                     <>
                         <div className="grid gap-6">
+                            <div className="grid gap-x-2 gap-y-6 grid-cols-1 md:grid-cols-2 md:gap-4">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="first_name">First name</Label>
+                                    <Input
+                                        id="first_name"
+                                        type="text"
+                                        required
+                                        autoFocus
+                                        tabIndex={1}
+                                        autoComplete="first_name"
+                                        name="first_name"
+                                        placeholder="First name"
+                                    />
+                                    <InputError message={errors.first_name} className="mt-2" />
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="last_name">Last name</Label>
+                                    <Input
+                                        id="last_name"
+                                        type="text"
+                                        required
+                                        autoFocus
+                                        tabIndex={2}
+                                        autoComplete="Last name"
+                                        name="last_name"
+                                        placeholder="Last name"
+                                    />
+                                    <InputError message={errors.last_name} className="mt-2" />
+                                </div>
+                            </div>
+
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
-                                <Input
-                                    id="name"
-                                    type="text"
+                                <Label htmlFor="date_of_birth">Date of birth</Label>
+                                <DateOfBirthInput
+                                    id="date_of_birth"
+                                    name="date_of_birth"
                                     required
                                     autoFocus
-                                    tabIndex={1}
-                                    autoComplete="name"
-                                    name="name"
-                                    placeholder="Full name"
+                                    tabIndex={3}
                                 />
-                                <InputError message={errors.name} className="mt-2" />
+                                <InputError message={errors.date_of_birth} className="mt-2" />
                             </div>
 
                             <div className="grid gap-2">
@@ -43,7 +73,7 @@ export default function Register() {
                                     id="email"
                                     type="email"
                                     required
-                                    tabIndex={2}
+                                    tabIndex={4}
                                     autoComplete="email"
                                     name="email"
                                     placeholder="email@example.com"
@@ -57,7 +87,7 @@ export default function Register() {
                                     id="password"
                                     type="password"
                                     required
-                                    tabIndex={3}
+                                    tabIndex={5}
                                     autoComplete="new-password"
                                     name="password"
                                     placeholder="Password"
@@ -71,7 +101,7 @@ export default function Register() {
                                     id="password_confirmation"
                                     type="password"
                                     required
-                                    tabIndex={4}
+                                    tabIndex={6}
                                     autoComplete="new-password"
                                     name="password_confirmation"
                                     placeholder="Confirm password"
