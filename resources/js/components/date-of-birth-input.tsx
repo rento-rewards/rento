@@ -2,27 +2,9 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+import { cn, formatDate, isValidDate } from '@/lib/utils';
 import { CalendarIcon } from 'lucide-react';
 import { ComponentProps, useState } from 'react';
-
-function formatDate(date: Date | undefined) {
-    if (!date) {
-        return '';
-    }
-    return date.toLocaleDateString('en-US', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-    });
-}
-
-function isValidDate(date: Date | undefined) {
-    if (!date) {
-        return false;
-    }
-    return !isNaN(date.getTime());
-}
 
 interface DateOfBirthInputProps extends ComponentProps<'input'> {}
 
