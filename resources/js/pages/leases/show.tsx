@@ -1,6 +1,5 @@
 import { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { AppHeader } from '@/components/app-header';
 import { Head, Link } from '@inertiajs/react';
 import LeaseDetail from '@/components/pages/leases/lease-detail';
 import { Button } from '@/components/ui/button';
@@ -9,7 +8,7 @@ import { useState } from 'react';
 import LeaseDeleteDialog from '@/components/pages/leases/lease-delete-dialog';
 
 type LeaseShowProps = {
-    lease: App.Data.LeaseData & { id: string };
+    lease: App.Data.Leases.LeaseData & { id: string };
 }
 
 export default function LeaseShow(props: LeaseShowProps) {

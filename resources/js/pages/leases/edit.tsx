@@ -3,7 +3,7 @@ import { BreadcrumbItem } from '@/types';
 import LeaseForm from '@/components/pages/leases/lease-form';
 
 type LeaseEditProps = {
-    lease: App.Data.LeaseData & { id: string };
+    lease: App.Data.Leases.LeaseData & { id: string };
 }
 
 export default function LeaseEdit({ lease }: LeaseEditProps) {

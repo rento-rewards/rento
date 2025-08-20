@@ -3,7 +3,6 @@ import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import LeaseCard, { LeaseDataWithId } from '@/components/pages/leases/lease-card';
 
 const breadcrumbs: BreadcrumbItem[] = [

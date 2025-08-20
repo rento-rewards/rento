@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Data;
+namespace App\Data\Leases;
 
 use DateTime;
 use Spatie\LaravelData\Attributes\Validation\Email;

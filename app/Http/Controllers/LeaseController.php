@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\LeaseData;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
-
+use App\Data\Leases\LeaseData;
 use App\Models\Lease;
+use Inertia\Inertia;
 
 class LeaseController extends Controller
 {
@@ -19,7 +17,7 @@ class LeaseController extends Controller
 
     public function create()
     {
-        return Inertia::render('leases/create');
+        return Inertia::render('leases/create', []);
     }
 
     public function store(LeaseData $data) {

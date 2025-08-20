@@ -12,7 +12,7 @@ import { Form } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 
 type LeaseDeleteDialogProps = {
-    lease: App.Data.LeaseData & { id: string };
+    lease: App.Data.Leases.LeaseData & { id: string };
 } & ComponentProps<typeof Dialog>;
 
 export default function LeaseDeleteDialog({ lease, ...rest }: LeaseDeleteDialogProps) {

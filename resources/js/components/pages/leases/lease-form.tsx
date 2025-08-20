@@ -5,18 +5,18 @@ import InputError from '@/components/input-error';
 import ProvinceInput from '@/components/pages/leases/province-input';
 import { DollarSign } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { formatOrdinals } from '@/lib/utils';
 import { PhoneInput } from '@/components/phone-input';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/react';
+import { formatOrdinals } from '@/lib/formatters';
 
 type LeaseFormProps = {
-    defaultValues?: App.Data.LeaseData & { id: string };
+    defaultValues?: App.Data.Leases.LeaseData & { id: string };
 }
 
 export default function LeaseForm(props: LeaseFormProps) {
     const { defaultValues } = props;
-    const { data, setData, post, put, processing, errors } = useForm<App.Data.LeaseData>({
+    const { data, setData, post, put, processing, errors } = useForm<App.Data.Leases.LeaseData>({
         address_line_1: defaultValues?.address_line_1 || '',
         address_line_2: defaultValues?.address_line_2 || '',
         city: defaultValues?.city || '',

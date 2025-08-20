@@ -1,10 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, DollarSign, Mail, Phone, User } from 'lucide-react';
-import { currencyFormatter, formatOrdinals } from '@/lib/utils';
 import { formatPhoneNumber } from 'react-phone-number-input';
+import { currencyFormatter, formatOrdinals } from '@/lib/formatters';
 
 type LeaseDetailProps = {
-    lease: App.Data.LeaseData & { id: string };
+    lease: App.Data.Leases.LeaseData & { id: string };
 }
 
 export default function LeaseDetail(props: LeaseDetailProps) {

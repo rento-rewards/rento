@@ -2,9 +2,10 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn, formatDate, isValidDate } from '@/lib/utils';
+import { cn, isValidDate } from '@/lib/utils';
 import { CalendarIcon } from 'lucide-react';
 import { ComponentProps, useState } from 'react';
+import { formatDate } from '@/lib/formatters';
 
 interface DateOfBirthInputProps extends ComponentProps<'input'> {}
 

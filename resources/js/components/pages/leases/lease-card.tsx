@@ -7,12 +7,12 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { CalendarIcon, DollarSignIcon, Edit2Icon, EllipsisVerticalIcon, TrashIcon } from 'lucide-react';
-import { currencyFormatter, formatOrdinals } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
 import LeaseDeleteDialog from '@/components/pages/leases/lease-delete-dialog';
+import { currencyFormatter, formatOrdinals } from '@/lib/formatters';
 
-export type LeaseDataWithId = App.Data.LeaseData & { id: string };
+export type LeaseDataWithId = App.Data.Leases.LeaseData & { id: string };
 
 type LeaseCardProps = {
     lease: LeaseDataWithId;
@@ -20,7 +20,6 @@ type LeaseCardProps = {
 
 export default function LeaseCard({ lease }: LeaseCardProps) {
     const {
-        id: lease_id,
         address_line_1,
         rent_amount,
         monthly_due_date,

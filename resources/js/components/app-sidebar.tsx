@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, FileText, Folder, LayoutGrid } from 'lucide-react';
+import { Clipboard, FileText, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -17,6 +17,11 @@ const mainNavItems: NavItem[] = [
         title: 'Leases',
         href: '/leases',
         icon: FileText,
+    },
+    {
+        title: 'Reports',
+        href: '/reports',
+        icon: Clipboard
     }
 ];
 
@@ -29,7 +34,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
+                            <Link href={route("dashboard")} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
