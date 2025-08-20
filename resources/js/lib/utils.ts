@@ -37,3 +37,9 @@ export const formatOrdinals = (n: number) => {
     const suffix = suffixes.get(rule);
     return `${n}${suffix}`;
 };
+
+export const currencyFormatter = new Intl.NumberFormat("en", {
+    style: "currency",
+    currency: "CAD",
+    currencyDisplay: "narrowSymbol",
+});
