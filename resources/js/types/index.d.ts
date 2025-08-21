@@ -31,14 +31,17 @@ export interface SharedData {
     [key: string]: unknown;
 }
 
-export interface User {
+export interface User extends Timestamp {
     id: number;
     first_name: string;
     last_name: string;
     email: string;
     avatar?: string;
     email_verified_at: string | null;
+    [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface Timestamp {
     created_at: string;
     updated_at: string;
-    [key: string]: unknown; // This allows for additional properties...
 }

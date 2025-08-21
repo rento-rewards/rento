@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\MoneyCast;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Report extends Model
 {
@@ -23,8 +24,8 @@ class Report extends Model
         'payment_amount' => MoneyCast::class,
     ];
 
-    public function lease()
+    public function lease(): BelongsTo
     {
-        return $this->belongsTo(Lease::class);
+        return $this->belongsTo(Lease::class, 'lease_id');
     }
 }

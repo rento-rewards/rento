@@ -1,6 +1,6 @@
 import ReportLayout from '@/components/pages/reports/layout';
 import { Form, Head, Link } from '@inertiajs/react';
-import ReportFormStepper from '@/components/pages/reports/stepper';
+import ReportFormStepper from '@/components/pages/reports/form-stepper';
 import { useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';

@@ -2,10 +2,13 @@
 
 namespace App\Data\Reports;
 
+use Carbon\CarbonImmutable;
 use DateTime;
+use Spatie\LaravelData\Attributes\Validation\Filled;
 use Spatie\LaravelData\Attributes\Validation\GreaterThan;
 use Spatie\LaravelData\Attributes\Validation\GreaterThanOrEqualTo;
 use Spatie\LaravelData\Attributes\Validation\LessThanOrEqualTo;
+use Spatie\LaravelData\Attributes\Validation\Sometimes;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Attributes\WithTransformer;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
@@ -30,6 +33,10 @@ class ReportData extends Data
 
         #[Required, GreaterThanOrEqualTo(2000), LessThanOrEqualTo(2100)]
         public int $due_year,
+
+        public ?CarbonImmutable $verified_at = null,
+
+        public ?CarbonImmutable $report_date = null,
     ) {
     }
 }

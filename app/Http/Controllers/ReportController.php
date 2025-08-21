@@ -6,7 +6,6 @@ use App\Data\Reports\ReportData;
 use App\Http\Requests\Reports\LeaseLookupRequest;
 use App\Models\Lease;
 use App\Models\Report;
-use App\Services\ReportService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -80,8 +79,10 @@ class ReportController extends Controller
     }
 
     public function show(Report $report): Response {
+        $lease = $report->lease()->first();
         return Inertia::render('reports/show', [
             'report' => $report,
+            'lease' => $lease,
         ]);
     }
 

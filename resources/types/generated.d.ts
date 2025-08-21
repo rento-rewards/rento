@@ -1,5 +1,6 @@
 declare namespace App.Data.Leases {
 export type LeaseData = {
+id: number;
 address_line_1: string;
 address_line_2: string | null;
 city: string;
@@ -20,5 +21,7 @@ payment_amount: number;
 payment_date: string;
 due_month: number;
 due_year: number;
+verified_at: string | null;
+report_date: string | null;
 };
 }

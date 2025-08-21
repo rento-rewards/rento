@@ -31,6 +31,7 @@ export const dateFormatter = new Intl.DateTimeFormat("en", {
     month: "long",
     day: "numeric",
     year: "numeric",
+    timeZone: "UTC"
 });
 
 const monthFormatter = new Intl.DateTimeFormat("en", {

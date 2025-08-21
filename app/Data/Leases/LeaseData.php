@@ -20,6 +20,8 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class LeaseData extends Data
 {
     public function __construct(
+        public int $id,
+
         #[Required]
         public string $address_line_1,
         public ?string $address_line_2,

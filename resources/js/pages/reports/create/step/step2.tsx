@@ -1,6 +1,6 @@
 import ReportLayout from '@/components/pages/reports/layout';
 import { Form, Head, Link } from '@inertiajs/react';
-import ReportFormStepper from '@/components/pages/reports/stepper';
+import ReportFormStepper from '@/components/pages/reports/form-stepper';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import InputError from '@/components/input-error';
