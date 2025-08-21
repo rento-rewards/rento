@@ -22,6 +22,7 @@ class Lease extends Model
         "landlord_name",
         "landlord_email",
         "landlord_phone",
+        "document_id",
     ];
 
     protected function casts(): array
