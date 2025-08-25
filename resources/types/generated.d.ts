@@ -1,6 +1,5 @@
 declare namespace App.Data.Leases {
 export type LeaseData = {
-id: number;
 address_line_1: string;
 address_line_2: string | null;
 city: string;
@@ -13,6 +12,7 @@ monthly_due_date: number;
 landlord_name: string;
 landlord_email: string;
 landlord_phone: string;
+document: any;
 };
 }
 declare namespace App.Data.Reports {

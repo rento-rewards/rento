@@ -45,3 +45,8 @@ export interface Timestamp {
     created_at: string;
     updated_at: string;
 }
+
+export interface UploadOption {
+    max_size?: number; // Maximum file size in bytes
+    mime_types?: string[]; // Array of allowed MIME types (e.g., ['image/jpeg', 'application/pdf'])
+}

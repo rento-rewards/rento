@@ -9,14 +9,19 @@ import { PhoneInput } from '@/components/phone-input';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/react';
 import { formatOrdinals } from '@/lib/formatters';
+import SingleDocumentUpload from '@/components/single-document-upload';
+import { UploadOption } from '@/types';
 
 type LeaseFormProps = {
     defaultValues?: App.Data.Leases.LeaseData & { id: string };
+    uploadOption: UploadOption;
 }
 
 export default function LeaseForm(props: LeaseFormProps) {
-    const { defaultValues } = props;
-    const { data, setData, post, put, processing, errors } = useForm<App.Data.Leases.LeaseData>({
+    const { defaultValues, uploadOption } = props;
+    const { data, setData, post, put, processing,
+        // @ts-ignore
+        errors } = useForm<App.Data.Leases.LeaseData>({
         address_line_1: defaultValues?.address_line_1 || '',
         address_line_2: defaultValues?.address_line_2 || '',
         city: defaultValues?.city || '',
@@ -28,25 +33,39 @@ export default function LeaseForm(props: LeaseFormProps) {
         monthly_due_date: defaultValues?.monthly_due_date || 1,
         landlord_name: defaultValues?.landlord_name || '',
         landlord_email: defaultValues?.landlord_email || '',
-        landlord_phone: defaultValues?.landlord_phone || ''
+        landlord_phone: defaultValues?.landlord_phone || '',
+        document: null,
     });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (defaultValues) {
+            put(route("leases.update", {
+                ...data,
+                id: defaultValues.id
+            }));
+        } else {
+            post(route("leases.store"));
+        }
+    }
 
 
     return <form
         className="flex h-full flex-1 flex-col
                 gap-8 overflow-x-auto rounded-xl p-4 w-full max-w-screen-md mx-auto"
-        onSubmit={(e) => {
-            e.preventDefault();
-            if (defaultValues) {
-                put(route("leases.update", {
-                    ...data,
-                    id: defaultValues.id
-                }));
-            } else {
-                post(route("leases.store"));
-            }
-        }}
+        onSubmit={handleSubmit}
     >
+        <section className="grid gap-2">
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Lease Document<span
+                className="text-destructive ml-1">*</span></h3>
+            <SingleDocumentUpload uploadOption={{
+                maxSize: uploadOption.max_size ? uploadOption.max_size * 1024 : undefined,
+                accept: uploadOption.mime_types?.join(", "),
+                onFilesAdded: ((file) => {
+                    setData("document", file[0]?.file);
+                })
+            }} />
+        </section>
         {/* @ts-ignore */}
         <AddressAutofill
             accessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}>

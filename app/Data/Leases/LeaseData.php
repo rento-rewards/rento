@@ -3,10 +3,13 @@
 namespace App\Data\Leases;
 
 use DateTime;
+use Illuminate\Http\UploadedFile;
 use Spatie\LaravelData\Attributes\Validation\Email;
 use Spatie\LaravelData\Attributes\Validation\GreaterThan;
 use Spatie\LaravelData\Attributes\Validation\GreaterThanOrEqualTo;
 use Spatie\LaravelData\Attributes\Validation\LessThanOrEqualTo;
+use Spatie\LaravelData\Attributes\Validation\Max;
+use Spatie\LaravelData\Attributes\Validation\MimeTypes;
 use Spatie\LaravelData\Attributes\Validation\Regex;
 use Spatie\LaravelData\Attributes\Validation\Required;
 use Spatie\LaravelData\Attributes\WithCast;
@@ -20,8 +23,6 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class LeaseData extends Data
 {
     public function __construct(
-        public int $id,
-
         #[Required]
         public string $address_line_1,
         public ?string $address_line_2,
@@ -50,6 +51,9 @@ class LeaseData extends Data
         public string $landlord_email,
         #[Required, Regex('/^\+?\d{10,15}$/')]
         public string $landlord_phone,
+
+        #[Required, MimeTypes(['image/*', 'application/pdf']), Max(2048)]
+        public UploadedFile $document,
     ) {
     }
 
@@ -57,6 +61,14 @@ class LeaseData extends Data
     {
         return [
             'landlord_phone.regex' => 'Invalid phone number format',
+        ];
+    }
+
+    public static function rulesMetadata(): array
+    {
+        return [
+            'mime_types' => ['image/*', 'application/pdf'],
+            'max_size' => 2048,
         ];
     }
 }

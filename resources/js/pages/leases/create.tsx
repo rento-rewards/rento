@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, UploadOption } from '@/types';
 import { Head } from '@inertiajs/react';
 import LeaseForm from '@/components/pages/leases/lease-form';
 
@@ -14,11 +14,15 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
-export default function LeaseCreate() {
+type Props = {
+    upload_option: UploadOption;
+}
+
+export default function LeaseCreate(props: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create Lease" />
-            <LeaseForm />
+            <LeaseForm uploadOption={props.upload_option} />
         </AppLayout>
     );
 }
