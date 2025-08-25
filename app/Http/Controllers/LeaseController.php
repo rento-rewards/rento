@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Data\Leases\LeaseData;
 use App\Data\Leases\LeaseDocumentData;
 use App\Models\Lease;
+use App\Services\LeaseDocumentExtractionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -13,8 +14,8 @@ use Inertia\Response;
 class LeaseController extends Controller
 {
     public function __construct(
+        private LeaseDocumentExtractionService $leaseDocumentExtractionService
     ) {
-
     }
 
     public function index(): Response
@@ -67,6 +68,7 @@ class LeaseController extends Controller
 
     public function extract(LeaseDocumentData $data): JsonResponse
     {
-        return response()->json([]);
+        $extracted = $this->leaseDocumentExtractionService->extract($data);
+        return response()->json($extracted);
     }
 }
