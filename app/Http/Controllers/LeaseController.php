@@ -62,6 +62,7 @@ class LeaseController extends Controller
     {
         return Inertia::render('leases/edit', [
             'lease' => $lease,
+            'upload_option' => LeaseData::rulesMetadata(),
         ]);
     }
 

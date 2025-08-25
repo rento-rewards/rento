@@ -1,12 +1,13 @@
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, UploadOption } from '@/types';
 import LeaseForm from '@/components/pages/leases/lease-form';
 
 type LeaseEditProps = {
     lease: App.Data.Leases.LeaseData & { id: string };
+    upload_option: UploadOption;
 }
 
-export default function LeaseEdit({ lease }: LeaseEditProps) {
+export default function LeaseEdit({ lease, upload_option }: LeaseEditProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Leases',
@@ -14,11 +15,11 @@ export default function LeaseEdit({ lease }: LeaseEditProps) {
         },
         {
             title: 'Edit Lease',
-            href: route('leases.edit', { id: lease.id }) // Replace with actual lease ID
+            href: ''
         }
     ];
 
     return <AppLayout breadcrumbs={breadcrumbs}>
-        <LeaseForm defaultValues={lease} />
+        <LeaseForm defaultValues={lease} uploadOption={upload_option} />
     </AppLayout>
 }
