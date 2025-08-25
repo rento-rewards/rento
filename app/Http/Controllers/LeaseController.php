@@ -72,6 +72,7 @@ class LeaseController extends Controller
 
     public function destroy(Lease $lease): RedirectResponse
     {
+        Storage::disk('leases')->delete($lease->document);
         $lease->delete();
         return redirect()->route('leases')->with('success', 'Lease deleted successfully.');
     }
