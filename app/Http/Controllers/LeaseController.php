@@ -8,6 +8,7 @@ use App\Models\Lease;
 use App\Services\LeaseDocumentExtractionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -36,7 +37,16 @@ class LeaseController extends Controller
 
     public function store(LeaseData $data): RedirectResponse
     {
-        $lease = auth()->user()->leases()->create($data->toArray());
+        $user = auth()->user();
+        $document = Storage::disk('leases')->putFile('/', $data->document);
+        if ($document === false) {
+            return redirect()->back()->withErrors(['document' => 'Failed to upload document.'])->withInput();
+        }
+        $entry = [
+            ...$data->except('document')->toArray(),
+            'document' => $document
+        ];
+        $lease = $user->leases()->create($entry);
         return redirect()->route('leases.show', $lease)->with('success', 'Lease created successfully.');
     }
 
