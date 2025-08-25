@@ -8,7 +8,7 @@ use Spatie\LaravelData\Attributes\Validation\MimeTypes;
 use Spatie\LaravelData\Attributes\Validation\Required;
 use Spatie\LaravelData\Data;
 
-class LeaseDocumentData extends Data
+class DocumentData extends Data
 {
     public function __construct(
         #[Required, MimeTypes(['image/*', 'application/pdf']), Max(2048)]

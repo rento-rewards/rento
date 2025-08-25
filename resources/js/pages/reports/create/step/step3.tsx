@@ -6,15 +6,18 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Button } from '@/components/ui/button';
 
 import { currencyFormatter, dateFormatter, formatMonth, formatOrdinals } from '@/lib/formatters';
-import { MailIcon, PhoneIcon, UserIcon } from 'lucide-react';
+import { MailIcon, Paperclip, PhoneIcon, UserIcon } from 'lucide-react';
 import { formatPhoneNumber } from 'react-phone-number-input';
+import { FileMetadata } from '@/hooks/use-file-upload';
 
 type Props = {
     report: App.Data.Reports.ReportData,
-    lease: App.Data.Leases.LeaseData
+    lease: App.Data.Leases.LeaseData,
+    proof_of_payment: FileMetadata
 }
 
-export default function ReportCreateStep3({ report, lease }: Props) {
+export default function ReportCreateStep3({ report, lease, proof_of_payment }: Props) {
+    console.log(proof_of_payment);
     const [section, setSection] = useState<'lease' | 'payment'>('lease');
     return (
         <ReportLayout>
@@ -85,20 +88,27 @@ export default function ReportCreateStep3({ report, lease }: Props) {
                         <AccordionContent className="space-y-8 mt-4">
                             <div className="flex">
                                 Payment Amount
-                                <strong className="ml-auto">
+                                <strong className="ms-auto">
                                     {currencyFormatter.format(report.payment_amount)}
                                 </strong>
                             </div>
                             <div className="flex">
                                 Payment Date
-                                <strong className="ml-auto">
+                                <strong className="ms-auto">
                                     {dateFormatter.format(new Date(report.payment_date))}
                                 </strong>
                             </div>
                             <div className="flex">
                                 Due Month
-                                <strong className="ml-auto">
+                                <strong className="ms-auto">
                                     {formatMonth(report.due_month, report.due_year)}
+                                </strong>
+                            </div>
+                            <div className="flex">
+                                Proof of Payment
+                                <strong className="ms-auto">
+                                    <Paperclip className="size-4 inline me-1" />
+                                    {proof_of_payment.name}
                                 </strong>
                             </div>
                             <Button variant="outline" asChild>

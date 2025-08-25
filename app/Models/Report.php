@@ -15,6 +15,7 @@ class Report extends Model
         'due_year',
         'verified_at',
         'report_date',
+        'proof_of_payment',
     ];
 
     protected $casts = [

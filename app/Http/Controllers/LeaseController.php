@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Data\Leases\LeaseData;
-use App\Data\Leases\LeaseDocumentData;
+use App\Data\Leases\DocumentData;
 use App\Models\Lease;
 use App\Services\LeaseDocumentExtractionService;
 use Illuminate\Http\JsonResponse;
@@ -79,7 +79,7 @@ class LeaseController extends Controller
         return redirect()->route('leases')->with('success', 'Lease deleted successfully.');
     }
 
-    public function extract(LeaseDocumentData $data): JsonResponse
+    public function extract(DocumentData $data): JsonResponse
     {
         $extracted = $this->leaseDocumentExtractionService->extract($data);
         return response()->json($extracted);

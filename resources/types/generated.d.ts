@@ -21,7 +21,7 @@ payment_amount: number;
 payment_date: string;
 due_month: number;
 due_year: number;
-verified_at: string | null;
-report_date: string | null;
+need_upload: boolean;
+proof_of_payment: any;
 };
 }
