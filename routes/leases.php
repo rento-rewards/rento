@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeaseController;
-use App\Http\Controllers\ReportController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/leases', [LeaseController::class, 'index'])->name('leases');
@@ -12,4 +11,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/leases/{lease}/edit', [LeaseController::class, 'edit'])->name('leases.edit');
     Route::put('/leases/{lease}', [LeaseController::class, 'update'])->name('leases.update');
     Route::delete('/leases/{lease}', [LeaseController::class, 'destroy'])->name('leases.destroy');
+    Route::post('/leases/extract', [LeaseController::class, 'extract'])->name('leases.extract');
 });

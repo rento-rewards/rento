@@ -3,13 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Data\Leases\LeaseData;
+use App\Data\Leases\LeaseDocumentData;
 use App\Models\Lease;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class LeaseController extends Controller
 {
+    public function __construct(
+    ) {
+
+    }
+
     public function index(): Response
     {
         $leases = auth()->user()->leases()->get();
@@ -56,5 +63,10 @@ class LeaseController extends Controller
     {
         $lease->delete();
         return redirect()->route('leases')->with('success', 'Lease deleted successfully.');
+    }
+
+    public function extract(LeaseDocumentData $data): JsonResponse
+    {
+        return response()->json([]);
     }
 }

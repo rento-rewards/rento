@@ -7,10 +7,12 @@ import { DollarSign } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PhoneInput } from '@/components/phone-input';
 import { Button } from '@/components/ui/button';
-import { useForm } from '@inertiajs/react';
+import { useForm, router } from '@inertiajs/react';
 import { formatOrdinals } from '@/lib/formatters';
 import SingleDocumentUpload from '@/components/single-document-upload';
 import { UploadOption } from '@/types';
+import { FormEvent } from 'react';
+import axios from 'axios';
 
 type LeaseFormProps = {
     defaultValues?: App.Data.Leases.LeaseData & { id: string };
@@ -21,7 +23,7 @@ export default function LeaseForm(props: LeaseFormProps) {
     const { defaultValues, uploadOption } = props;
     const { data, setData, post, put, processing,
         // @ts-ignore
-        errors } = useForm<App.Data.Leases.LeaseData>({
+        errors, setError } = useForm<App.Data.Leases.LeaseData>({
         address_line_1: defaultValues?.address_line_1 || '',
         address_line_2: defaultValues?.address_line_2 || '',
         city: defaultValues?.city || '',
@@ -37,16 +39,27 @@ export default function LeaseForm(props: LeaseFormProps) {
         document: null,
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (defaultValues) {
             put(route("leases.update", {
-                ...data,
-                id: defaultValues.id
+                data: {
+                    ...data,
+                    id: defaultValues.id
+                }
             }));
         } else {
             post(route("leases.store"));
         }
+    }
+
+    const handleUpload = (file: any) => {
+        const form = new FormData();
+        form.append("document", file);
+        axios.post(route("leases.extract"), form).then(response => {
+            setData("document", file);
+            console.log(response);
+        })
     }
 
 
@@ -61,10 +74,12 @@ export default function LeaseForm(props: LeaseFormProps) {
             <SingleDocumentUpload uploadOption={{
                 maxSize: uploadOption.max_size ? uploadOption.max_size * 1024 : undefined,
                 accept: uploadOption.mime_types?.join(", "),
-                onFilesAdded: ((file) => {
-                    setData("document", file[0]?.file);
+                onFilesAdded: ((files) => {
+                    const file = files[0].file;
+                    handleUpload(file);
                 })
             }} />
+            <InputError message={errors.document} className="mt-2" />
         </section>
         {/* @ts-ignore */}
         <AddressAutofill
