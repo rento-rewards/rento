@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class LeaseController extends Controller
 {
@@ -81,5 +82,15 @@ class LeaseController extends Controller
     {
         $extracted = $this->leaseDocumentExtractionService->extract($data);
         return response()->json($extracted);
+    }
+
+    public function download(Lease $lease)
+    {
+        $document = $lease->document;
+        $extension = pathinfo($document, PATHINFO_EXTENSION);
+        $url = Storage::disk('leases')->temporaryUrl($document, now()->addMinutes(5), [
+            'ResponseContentDisposition' => "attachment; filename=\"lease.{$extension}\""
+        ]);
+        return redirect($url);
     }
 }

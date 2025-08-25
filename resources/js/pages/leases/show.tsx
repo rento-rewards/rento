@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import { Head, Link } from '@inertiajs/react';
 import LeaseDetail from '@/components/pages/leases/lease-detail';
 import { Button } from '@/components/ui/button';
-import { Edit2, Trash } from 'lucide-react';
+import { Download, Edit2, Trash } from 'lucide-react';
 import { useState } from 'react';
 import LeaseDeleteDialog from '@/components/pages/leases/lease-delete-dialog';
 
@@ -41,6 +41,11 @@ export default function LeaseShow(props: LeaseShowProps) {
                     </Button>
                     <Button variant="destructive" onClick={() => setOpen(true)}>
                         <Trash /> Delete
+                    </Button>
+                    <Button asChild className="ms-auto">
+                        <a href={route('leases.download', lease)}>
+                            <Download /> Download
+                        </a>
                     </Button>
                 </div>
                 <LeaseDetail lease={lease} />

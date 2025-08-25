@@ -11,5 +11,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/leases/{lease}/edit', [LeaseController::class, 'edit'])->name('leases.edit');
     Route::put('/leases/{lease}', [LeaseController::class, 'update'])->name('leases.update');
     Route::delete('/leases/{lease}', [LeaseController::class, 'destroy'])->name('leases.destroy');
+    Route::get('/leases/{lease}/download', [LeaseController::class, 'download'])->name('leases.download');
     Route::post('/leases/extract', [LeaseController::class, 'extract'])->name('leases.extract');
 });
