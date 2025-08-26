@@ -11,7 +11,7 @@ import { CheckIcon } from 'lucide-react';
 import { Timestamp } from '@/types';
 
 type Props = {
-    report: App.Data.Reports.ReportData & Timestamp
+    report: App.Data.Reports.ReportFormData & Timestamp
 }
 
 export default function ReportStatus(props: Props) {

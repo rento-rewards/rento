@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Data\Leases\DocumentData;
-use App\Data\Reports\ReportData;
+use App\Data\Reports\ReportFormData;
+use App\Data\Reports\ReportTableData;
 use App\Http\Requests\Reports\LeaseLookupRequest;
 use App\Models\Lease;
 use App\Models\Report;
@@ -16,7 +17,11 @@ class ReportController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('reports/index', []);
+        $per_page = request('per_page', 10);
+        $reports = auth()->user()->reports()->paginate($per_page)->withQueryString();
+        return Inertia::render('reports/index', [
+            'reports' => ReportTableData::collect($reports),
+        ]);
     }
 
     public function create(): RedirectResponse
@@ -54,7 +59,7 @@ class ReportController extends Controller
         ]);
     }
 
-    public function processStep2(ReportData $data): RedirectResponse
+    public function processStep2(ReportFormData $data): RedirectResponse
     {
         // Upload the proof of payment file
         if ($data->need_upload) {

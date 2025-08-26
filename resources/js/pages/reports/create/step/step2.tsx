@@ -11,11 +11,11 @@ import SingleDocumentUpload from '@/components/single-document-upload';
 import { FormEvent } from 'react';
 import { UploadOption } from '@/types';
 import { FileMetadata } from '@/hooks/use-file-upload';
-import ReportData = App.Data.Reports.ReportData;
+import ReportData = App.Data.Reports.ReportFormData;
 
 type Props = {
     lease: App.Data.Leases.LeaseData & { id: string },
-    report?: App.Data.Reports.ReportData,
+    report?: App.Data.Reports.ReportFormData,
     proof_of_payment?: FileMetadata,
     upload_option: UploadOption
 }

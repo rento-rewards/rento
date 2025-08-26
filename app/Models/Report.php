@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\MoneyCast;
+use App\Enums\ReportStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -23,6 +24,7 @@ class Report extends Model
         'verified_at' => 'datetime',
         'report_date' => 'date',
         'payment_amount' => MoneyCast::class,
+        'status' => ReportStatus::class,
     ];
 
     public function lease(): BelongsTo

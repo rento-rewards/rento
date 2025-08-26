@@ -50,3 +50,25 @@ export interface UploadOption {
     max_size?: number; // Maximum file size in bytes
     mime_types?: string[]; // Array of allowed MIME types (e.g., ['image/jpeg', 'application/pdf'])
 }
+
+export interface LaravelPaginationLink {
+    url: string | null;
+    label: string;
+    active: boolean;
+}
+
+export interface LaravelPagination<T> {
+    current_page: number;
+    data: T[];
+    first_page_url: string;
+    from: number | null;
+    last_page: number;
+    last_page_url: string;
+    links: LaravelPaginationLink[];
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number | null;
+    total: number;
+}

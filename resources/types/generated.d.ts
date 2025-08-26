@@ -16,12 +16,22 @@ document: any;
 };
 }
 declare namespace App.Data.Reports {
-export type ReportData = {
+export type ReportFormData = {
 payment_amount: number;
 payment_date: string;
 due_month: number;
 due_year: number;
 need_upload: boolean;
-proof_of_payment: any;
+proof_of_payment: any | null;
 };
+export type ReportTableData = {
+id: number;
+created_at: string;
+payment_amount: number;
+payment_date: string;
+status: App.Enums.ReportStatus;
+};
+}
+declare namespace App.Enums {
+export type ReportStatus = 'created' | 'verified' | 'reported';
 }

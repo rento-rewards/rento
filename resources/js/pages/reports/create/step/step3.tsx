@@ -11,7 +11,7 @@ import { formatPhoneNumber } from 'react-phone-number-input';
 import { FileMetadata } from '@/hooks/use-file-upload';
 
 type Props = {
-    report: App.Data.Reports.ReportData,
+    report: App.Data.Reports.ReportFormData,
     lease: App.Data.Leases.LeaseData,
     proof_of_payment: FileMetadata
 }

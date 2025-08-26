@@ -19,7 +19,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 use Symfony\Contracts\Service\Attribute\Required;
 
 #[TypeScript]
-class ReportData extends Data
+class ReportFormData extends Data
 {
     public function __construct(
         #[Required, GreaterThan(0)]
