@@ -9,13 +9,14 @@ import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/p
 import { Button } from '@/components/ui/button';
 import { ChevronFirst, ChevronLast, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useId } from 'react';
-import { Link, router } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 
 type Props = {
-    reports: LaravelPagination<App.Data.Reports.ReportTableData>
+    reports: LaravelPagination<App.Data.Reports.ReportTableData>,
+    handlePerPageChange?: (value: string) => void
 }
 
-export default function ReportTable({ reports }: Props) {
+export default function ReportTable({ reports, handlePerPageChange }: Props) {
     const table = useReactTable({
         columns,
         data: reports.data,
@@ -28,9 +29,6 @@ export default function ReportTable({ reports }: Props) {
     });
 
     const id = useId();
-    const handlePerPageChange = (value: string) => {
-        router.visit(route('reports', { per_page: value }), { preserveState: true });
-    }
 
     return (
         <>

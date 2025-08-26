@@ -19,6 +19,7 @@ class ReportDetailData extends Data
         public float           $payment_amount,
 
         public CarbonImmutable $payment_date,
+
         public int             $due_month,
         public int             $due_year,
 

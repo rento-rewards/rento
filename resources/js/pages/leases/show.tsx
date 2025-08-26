@@ -1,6 +1,6 @@
 import { BreadcrumbItem, LaravelPagination } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import LeaseDetail from '@/components/pages/leases/lease-detail';
 import { Button } from '@/components/ui/button';
 import { Download, Edit2, Plus, Trash } from 'lucide-react';
@@ -59,7 +59,11 @@ export default function LeaseShow({ lease, reports }: LeaseShowProps) {
 
                 <div className="space-y-4">
                     <h3 className="text-2xl font-semibold tracking-tight">Reports</h3>
-                    <ReportTable reports={reports} />
+                    <ReportTable reports={reports} handlePerPageChange={(value) => {
+                        router.visit(route('leases.show', { lease, per_page: value }), {
+                            preserveState: true,
+                        });
+                    }} />
                 </div>
             </div>
             <LeaseDeleteDialog lease={lease} open={open} onOpenChange={setOpen} />

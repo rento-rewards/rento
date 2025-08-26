@@ -24,6 +24,14 @@ export const columns: ColumnDef<App.Data.Reports.ReportTableData>[] = [
         size: 160
     },
     {
+        accessorKey: 'due_month_year',
+        header: 'Due Month',
+        cell: ({ row }) => {
+            return row.original.due_month_year;
+        },
+        size: 120
+    },
+    {
         accessorKey: 'payment_amount',
         header: () => <div className="text-right">Amount</div>,
         cell: ({ row }) => {

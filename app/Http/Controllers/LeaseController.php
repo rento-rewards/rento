@@ -10,6 +10,7 @@ use App\Models\Lease;
 use App\Services\LeaseDocumentExtractionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -52,9 +53,9 @@ class LeaseController extends Controller
         return redirect()->route('leases.show', $lease)->with('success', 'Lease created successfully.');
     }
 
-    public function show(Lease $lease): Response
+    public function show(Lease $lease, Request $request): Response
     {
-        $limit = request('limit', 10);
+        $limit = $request->query('per_page', 10);
         $reports = $lease->reports()->paginate($limit)->withQueryString();
         return Inertia::render('leases/show', [
             'lease' => $lease,

@@ -12,13 +12,11 @@ import { Link } from '@inertiajs/react';
 import LeaseDeleteDialog from '@/components/pages/leases/lease-delete-dialog';
 import { currencyFormatter, formatOrdinals } from '@/lib/formatters';
 
-export type LeaseDataWithId = App.Data.Leases.LeaseData & { id: string };
-
-type LeaseCardProps = {
-    lease: LeaseDataWithId;
+type Props = {
+    lease: App.Data.Leases.LeaseDetailData;
 }
 
-export default function LeaseCard({ lease }: LeaseCardProps) {
+export default function LeaseCard({ lease }: Props) {
     const {
         address_line_1,
         rent_amount,

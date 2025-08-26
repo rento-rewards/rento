@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, LaravelPagination } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import ReportTable from '@/components/pages/reports/report-table';
@@ -19,7 +19,7 @@ type Props = {
 export default function ReportIndex({ reports }: Props) {
     return <AppLayout breadcrumbs={breadcrumbs}>
         <Head title={'Reports'} />
-        <div className="flex w-full flex-1 flex-col gap-8 p-4">
+        <div className="flex w-full flex-1 flex-col gap-4 p-4 max-w-screen-lg mx-auto">
             <div className="flex gap-4 justify-end">
                 <Button asChild>
                     <Link href={route('reports.create')} prefetch>
@@ -28,7 +28,9 @@ export default function ReportIndex({ reports }: Props) {
                     </Link>
                 </Button>
             </div>
-            <ReportTable reports={reports} />
+            <ReportTable reports={reports} handlePerPageChange={(value) => {
+                router.get(route('reports'), { per_page: value }, { preserveState: true });
+            }} />
         </div>
     </AppLayout>
 }

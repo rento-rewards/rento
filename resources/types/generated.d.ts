@@ -51,6 +51,7 @@ need_upload: boolean;
 proof_of_payment: any | null;
 };
 export type ReportTableData = {
+due_month_year: string;
 id: number;
 created_at: string;
 payment_amount: number;
