@@ -13,4 +13,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/reports/create/step/2', [ReportController::class, 'processStep2'])->name('reports.store.step2');
     Route::get('/reports/create/step/3', [ReportController::class, 'step3'])->name('reports.create.step3');
     Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
+    Route::get('/reports/{report}/proof/download', [ReportController::class, 'downloadProof'])->name('reports.proof.download');
 });

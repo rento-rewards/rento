@@ -1,11 +1,12 @@
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, Timestamp } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { currencyFormatter, dateFormatter } from '@/lib/formatters';
-import { Mail, Phone, User } from 'lucide-react';
+import { Download, Mail, Phone, User } from 'lucide-react';
 import { formatPhoneNumber } from 'react-phone-number-input';
 import ReportStatus from '@/components/pages/reports/report-status';
+import { Button } from '@/components/ui/button';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Reports', href: route('reports') },
@@ -20,8 +21,16 @@ type Props = {
 export default function ReportShow({ report, lease }: Props) {
     return (<AppLayout breadcrumbs={breadcrumbs}>
         <Head title="Report Details" />
-        <div className="@container w-full p-4">
-            <div className="grid @lg:grid-cols-[2fr_1fr] gap-4 w-full max-w-screen-lg mx-auto mt-8">
+        <div className="@container w-full p-4 space-y-4">
+            <div className="flex justify-end">
+                <Button asChild>
+                    <a href={route('reports.proof.download', report)}>
+                        <Download />
+                        Proof of Payment
+                    </a>
+                </Button>
+            </div>
+            <div className="grid @lg:grid-cols-[2fr_1fr] gap-4 w-full max-w-screen-lg mx-auto">
                 <div className="space-y-4 order-2 @lg:order-1">
                     <Card>
                         <CardHeader>
@@ -29,11 +38,6 @@ export default function ReportShow({ report, lease }: Props) {
                             <div className="mt-4">
                                 <ReportStatus report={report} />
                             </div>
-                        </CardHeader>
-                    </Card>
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Proof of Payment</CardTitle>
                         </CardHeader>
                     </Card>
                 </div>

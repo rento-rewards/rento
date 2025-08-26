@@ -44,7 +44,7 @@ export default function LeaseShow(props: LeaseShowProps) {
                     </Button>
                     <Button asChild className="ms-auto">
                         <a href={route('leases.download', lease)}>
-                            <Download /> Download
+                            <Download /> Lease Document
                         </a>
                     </Button>
                 </div>

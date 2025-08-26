@@ -116,6 +116,20 @@ class ReportController extends Controller
         ]);
     }
 
+    public function downloadProof(Report $report) {
+        $path = $report->proof_of_payment;
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+        $url = Storage::disk('reports')->temporaryUrl(
+            $path,
+            now()->addMinutes(5),
+            [
+                'ResponseContentDisposition' => "attachment; filename=\"proof.{$extension}\""
+            ]
+        );
+
+        return redirect($url);
+    }
+
     private function getCurrentLease(): ?Lease {
         $lease_id = session('lease_id');
         return $lease_id ? auth()->user()->leases()->find($lease_id) : null;

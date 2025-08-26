@@ -89,9 +89,13 @@ class LeaseController extends Controller
     {
         $document = $lease->document;
         $extension = pathinfo($document, PATHINFO_EXTENSION);
-        $url = Storage::disk('leases')->temporaryUrl($document, now()->addMinutes(5), [
-            'ResponseContentDisposition' => "attachment; filename=\"lease.{$extension}\""
-        ]);
+        $url = Storage::disk('leases')->temporaryUrl(
+            $document,
+            now()->addMinutes(5),
+            [
+                'ResponseContentDisposition' => "attachment; filename=\"lease.{$extension}\""
+            ]
+        );
         return redirect($url);
     }
 }
