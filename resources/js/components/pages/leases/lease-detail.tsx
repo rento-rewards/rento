@@ -4,7 +4,7 @@ import { formatPhoneNumber } from 'react-phone-number-input';
 import { currencyFormatter, formatOrdinals } from '@/lib/formatters';
 
 type LeaseDetailProps = {
-    lease: App.Data.Leases.LeaseData & { id: string };
+    lease: App.Data.Leases.LeaseDetailData
 }
 
 export default function LeaseDetail(props: LeaseDetailProps) {

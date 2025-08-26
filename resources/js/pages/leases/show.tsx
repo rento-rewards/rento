@@ -8,7 +8,7 @@ import { useState } from 'react';
 import LeaseDeleteDialog from '@/components/pages/leases/lease-delete-dialog';
 
 type LeaseShowProps = {
-    lease: App.Data.Leases.LeaseData & { id: string };
+    lease: App.Data.Leases.LeaseDetailData
 }
 
 export default function LeaseShow(props: LeaseShowProps) {

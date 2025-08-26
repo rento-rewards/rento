@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Data\Leases\LeaseData;
+use App\Data\Leases\LeaseDetailData;
 use App\Data\Leases\DocumentData;
 use App\Models\Lease;
 use App\Services\LeaseDocumentExtractionService;
@@ -11,7 +12,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class LeaseController extends Controller
 {
@@ -24,7 +24,7 @@ class LeaseController extends Controller
     {
         $leases = auth()->user()->leases()->get();
         return Inertia::render('leases/index', [
-            'leases' => $leases,
+            'leases' => LeaseDetailData::collect($leases),
         ]);
     }
 

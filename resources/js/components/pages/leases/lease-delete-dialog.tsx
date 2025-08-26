@@ -12,7 +12,7 @@ import { Form } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 
 type LeaseDeleteDialogProps = {
-    lease: App.Data.Leases.LeaseData & { id: string };
+    lease: App.Data.Leases.LeaseDetailData
 } & ComponentProps<typeof Dialog>;
 
 export default function LeaseDeleteDialog({ lease, ...rest }: LeaseDeleteDialogProps) {
@@ -28,7 +28,8 @@ export default function LeaseDeleteDialog({ lease, ...rest }: LeaseDeleteDialogP
                 <DialogHeader>
                     <DialogTitle>Are you sure?</DialogTitle>
                     <DialogDescription>
-                        Are you sure you want to delete this lease for <strong>{lease.address_line_1}</strong>? This action cannot be
+                        Are you sure you want to delete this lease for <strong>{lease.address_line_1}</strong>? This
+                        action cannot be
                         undone.
                     </DialogDescription>
                 </DialogHeader>
@@ -47,5 +48,5 @@ export default function LeaseDeleteDialog({ lease, ...rest }: LeaseDeleteDialogP
                 </Form>
             </DialogFooter>
         </DialogContent>
-    </Dialog>
+    </Dialog>;
 }
