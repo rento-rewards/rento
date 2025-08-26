@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Data\Leases\LeaseData;
 use App\Data\Leases\LeaseDetailData;
 use App\Data\Leases\DocumentData;
+use App\Data\Reports\ReportTableData;
 use App\Models\Lease;
 use App\Services\LeaseDocumentExtractionService;
 use Illuminate\Http\JsonResponse;
@@ -53,8 +54,11 @@ class LeaseController extends Controller
 
     public function show(Lease $lease): Response
     {
+        $limit = request('limit', 10);
+        $reports = $lease->reports()->paginate($limit)->withQueryString();
         return Inertia::render('leases/show', [
             'lease' => $lease,
+            'reports' => ReportTableData::collect($reports),
         ]);
     }
 

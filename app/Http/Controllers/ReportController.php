@@ -28,6 +28,11 @@ class ReportController extends Controller
 
     public function create(): RedirectResponse
     {
+        $lease_id = request('lease_id', null);
+        if ($lease_id) {
+            session()->put('lease_id', $lease_id);
+            return redirect()->route('reports.create.step2');
+        }
         return redirect()->route('reports.create.step1');
     }
 
