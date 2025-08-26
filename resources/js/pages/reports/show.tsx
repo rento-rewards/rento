@@ -13,8 +13,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 type Props = {
-    report: App.Data.Reports.ReportFormData & Timestamp,
-    lease: App.Data.Leases.LeaseData
+    report: App.Data.Reports.ReportDetailData,
+    lease: App.Data.Leases.LeaseDetailData,
 }
 
 export default function ReportShow({ report, lease }: Props) {

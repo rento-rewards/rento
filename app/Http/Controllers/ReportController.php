@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Data\Leases\DocumentData;
+use App\Data\Leases\LeaseDetailData;
+use App\Data\Reports\ReportDetailData;
 use App\Data\Reports\ReportFormData;
 use App\Data\Reports\ReportTableData;
 use App\Http\Requests\Reports\LeaseLookupRequest;
@@ -108,10 +110,9 @@ class ReportController extends Controller
     }
 
     public function show(Report $report): Response {
-        $lease = $report->lease()->first();
         return Inertia::render('reports/show', [
-            'report' => $report,
-            'lease' => $lease,
+            'report' => ReportDetailData::from($report),
+            'lease' => LeaseDetailData::from($report->lease),
         ]);
     }
 

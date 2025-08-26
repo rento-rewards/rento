@@ -31,6 +31,17 @@ landlord_phone: string;
 };
 }
 declare namespace App.Data.Reports {
+export type ReportDetailData = {
+id: number;
+payment_amount: number;
+payment_date: string;
+due_month: number;
+due_year: number;
+status: App.Enums.ReportStatus;
+created_at: string;
+verified_at: string | null;
+report_date: string | null;
+};
 export type ReportFormData = {
 payment_amount: number;
 payment_date: string;

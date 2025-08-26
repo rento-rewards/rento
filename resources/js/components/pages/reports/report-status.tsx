@@ -11,19 +11,19 @@ import { CheckIcon } from 'lucide-react';
 import { Timestamp } from '@/types';
 
 type Props = {
-    report: App.Data.Reports.ReportFormData & Timestamp
+    report: App.Data.Reports.ReportDetailData
 }
 
-export default function ReportStatus(props: Props) {
-    const { report } = props;
+export default function ReportStatus({ report }: Props) {
+    const { created_at, verified_at, report_date } = report;
 
     const items = [
-        { date: new Date(report.created_at), title: 'Report Created' },
-        report.verified_at ?
-            { date: new Date(report.verified_at), title: 'Verified' } :
+        { date: new Date(created_at), title: 'Report Created' },
+        verified_at ?
+            { date: new Date(verified_at), title: 'Verified' } :
             { date: null, title: 'Verification' },
-        report.report_date ?
-            { date: new Date(report.report_date), title: 'Reported' } :
+        report_date ?
+            { date: new Date(report_date), title: 'Reported' } :
             { date: null, title: 'Report to Credit Bureau' },
     ];
 
