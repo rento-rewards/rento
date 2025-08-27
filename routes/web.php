@@ -12,7 +12,7 @@ Route::get('/', function () {
     return Inertia::render('home', []);
 })->name('home');
 
-Route::get('/.well-known/jwks.json', [JwksController::class, 'show'])->name('jwks');
+require __DIR__.'/interac.php';
 
 Route::get('/pricing', function () {
     return Inertia::render('pricing', []);
