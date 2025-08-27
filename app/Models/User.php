@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -63,5 +64,27 @@ class User extends Authenticatable implements MustVerifyEmail
             firstKey: 'tenant_id',
             secondKey: 'lease_id'
         );
+    }
+
+    public function next_rent_due_date(): ?Carbon {
+        if ($this->leases->isEmpty()) {
+            return null;
+        }
+
+        return $this->leases
+            ->map(fn ($lease) => $lease->next_due_date) // uses Lease accessor with "end of month" rule
+            ->sort()
+            ->first();
+    }
+
+    public function status_counts(string $scope = 'all'): Collection
+    {
+        $query = $this->reports();
+        if ($scope === 'this_year') {
+            $query->whereYear('created_at', Carbon::now()->year);
+        }
+        return $query->selectRaw('status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status');
     }
 }

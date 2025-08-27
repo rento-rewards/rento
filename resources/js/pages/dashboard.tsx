@@ -1,24 +1,62 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
-import ReportCount from '@/components/pages/dashboard/ReportCount';
+import { Head, Link } from '@inertiajs/react';
+import ReportCount, { ReportCountData } from '@/components/pages/dashboard/report-count';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import Greeting from '@/components/pages/dashboard/Greeting';
+import Greeting from '@/components/pages/dashboard/greeting';
+import RecentReportTable from '@/components/pages/dashboard/recent-report-table';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
-    },
+        href: '/dashboard'
+    }
 ];
 
-export default function Dashboard() {
+type Props = {
+    dashboard: {
+        recent_reports: App.Data.Reports.ReportTableData[],
+        report_counts: {
+            all_time: ReportCountData,
+            this_year: ReportCountData
+        }
+    }
+}
+
+export default function Dashboard(props: Props) {
+    const { dashboard } = props;
+    console.log(dashboard);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="flex flex-1 flex-col gap-4 rounded-xl p-4 w-full max-w-screen-lg mx-auto @container/dashboard">
+            <div
+                className="flex h-full flex-1 flex-col gap-12 rounded-xl p-4 w-full max-w-screen-lg mx-auto">
                 <Greeting />
+                <div className="grid md:grid-cols-2 gap-4">
+                    <ReportCount reportCounts={dashboard.report_counts} />
+                    <Card className="flex flex-col">
+                        <CardHeader>
+                            <CardTitle>
+                                Next Due
+                            </CardTitle>
+                        </CardHeader>
+                    </Card>
+                    {/*<TotalReportedAmount />*/}
+                    {/*<EquifaxReport />*/}
+                </div>
+                <div className="space-y-4">
+                    <h2 className="text-xl font-semibold">
+                        Recent Reports
+                    </h2>
+                    <RecentReportTable reports={dashboard.recent_reports} />
+                    <Button variant="link" className="px-0">
+                        <Link href={route('reports')} className="inline-flex items-center gap-1">
+                            View All Reports <ArrowRight size={24} />
+                        </Link>
+                    </Button>
+                </div>
             </div>
         </AppLayout>
     );

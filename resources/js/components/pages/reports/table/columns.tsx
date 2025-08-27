@@ -32,6 +32,28 @@ export const columns: ColumnDef<App.Data.Reports.ReportTableData>[] = [
         size: 120
     },
     {
+        accessorKey: 'status',
+        header: () => <div className="text-right">Status</div>,
+        cell: ({ row }) => {
+            const isReported = row.original.status === 'verified';
+            return (
+                <div className="flex items-end">
+                    <Badge variant="outline" className="gap-1.5 ml-auto">
+                        <span
+                            className={cn(
+                                'size-1.5 rounded-full',
+                                isReported ? 'bg-green-500' : 'bg-amber-500'
+                            )}
+                            aria-hidden="true"
+                        />
+                        {isReported ? 'Reported' : 'Processing'}
+                    </Badge>
+                </div>
+            );
+        },
+        size: 80
+    },
+    {
         accessorKey: 'payment_amount',
         header: () => <div className="text-right">Amount</div>,
         cell: ({ row }) => {
@@ -41,28 +63,6 @@ export const columns: ColumnDef<App.Data.Reports.ReportTableData>[] = [
                 </div>
             );
         }
-    },
-    {
-        accessorKey: 'status',
-        header: () => <div className="text-right">Status</div>,
-        cell: ({ row }) => {
-            const isReported = row.original.status === 'verified';
-            return (
-                <div className="flex items-end">
-                    <Badge variant="outline" className="gap-1.5 ml-auto">
-                        <span
-                          className={cn(
-                              'size-1.5 rounded-full',
-                              isReported ? 'bg-green-500' : 'bg-amber-500'
-                          )}
-                          aria-hidden="true"
-                      />
-                        {isReported ? 'Reported' : 'Processing'}
-                    </Badge>
-                </div>
-            );
-        },
-        size: 80
     },
     {
         accessorKey: 'id',

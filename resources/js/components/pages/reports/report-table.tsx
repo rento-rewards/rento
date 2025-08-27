@@ -1,8 +1,6 @@
 import { LaravelPagination } from '@/types';
-import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { columns } from '@/components/pages/reports/table/columns';
-import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table';
-import ReportTableHeader from '@/components/pages/reports/table/header';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination';
@@ -10,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronFirst, ChevronLast, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useId } from 'react';
 import { Link } from '@inertiajs/react';
+import PlainReportTable from '@/components/pages/reports/plain-report-table';
 
 type Props = {
     reports: LaravelPagination<App.Data.Reports.ReportTableData>,
@@ -32,27 +31,7 @@ export default function ReportTable({ reports, handlePerPageChange }: Props) {
 
     return (
         <>
-            <div className="overflow-hidden rounded-lg border border-border bg-background">
-                <Table className="table-fixed">
-                    <TableHeader>
-                        <ReportTableHeader table={table} />
-                    </TableHeader>
-                    <TableBody>
-                        {table.getRowModel().rows.map((row) => (
-                            <TableRow
-                                key={row.id}
-                                data-state={row.getIsSelected() && 'selected'}
-                            >
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </div>
+            <PlainReportTable table={table} />
             <div className="flex items-center justify-between gap-8">
                 {/* Results per page */}
                 <div className="flex items-center gap-3">

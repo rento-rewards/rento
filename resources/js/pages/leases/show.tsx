@@ -61,6 +61,7 @@ export default function LeaseShow({ lease, reports }: LeaseShowProps) {
                     <h3 className="text-2xl font-semibold tracking-tight">Reports</h3>
                     <ReportTable reports={reports} handlePerPageChange={(value) => {
                         router.visit(route('leases.show', { lease, per_page: value }), {
+                            only: ["reports"],
                             preserveState: true,
                         });
                     }} />
