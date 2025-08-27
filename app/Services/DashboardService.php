@@ -15,6 +15,7 @@ class DashboardService
                 'all_time' => $user->status_counts(),
                 'this_year' => $user->status_counts(scope: 'this_year'),
             ],
+            'has_id_verification' => $user->interac()->exists(),
             'next_due' => $this->getLeaseWithNexitDue($user),
         ];
     }

@@ -2,12 +2,12 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import ReportCount, { ReportCountData } from '@/components/pages/dashboard/report-count';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import Greeting from '@/components/pages/dashboard/greeting';
 import RecentReportTable from '@/components/pages/dashboard/recent-report-table';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import NextDue, { NextDueLease } from '@/components/pages/dashboard/next-due';
+import IdVerificationBanner from '@/components/pages/dashboard/id-verification-banner';
 import { reports } from '@/routes';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -20,6 +20,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 type Props = {
     dashboard: {
         recent_reports: App.Data.Reports.ReportTableData[],
+        has_id_verification: boolean,
         report_counts: {
             all_time: ReportCountData,
             this_year: ReportCountData
@@ -37,6 +38,9 @@ export default function Dashboard(props: Props) {
             <div
                 className="flex h-full flex-1 flex-col gap-12 rounded-xl p-4 w-full max-w-screen-lg mx-auto">
                 <Greeting />
+                {!dashboard.has_id_verification && (
+                    <IdVerificationBanner />
+                )}
                 <div className="grid md:grid-cols-2 gap-4">
                     <ReportCount reportCounts={dashboard.report_counts} />
                     <NextDue nextDues={dashboard.next_due} />
