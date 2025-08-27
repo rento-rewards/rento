@@ -18,7 +18,8 @@
         "laravel/wayfinder": "^0.1.10",
         "league/flysystem-aws-s3-v3": "^3.0",
         "spatie/laravel-data": "^4.17",
-        "spatie/laravel-typescript-transformer": "^2.5"
+        "spatie/laravel-typescript-transformer": "^2.5",
+        "web-token/jwt-framework": "^4.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
