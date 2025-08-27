@@ -42,7 +42,7 @@ class LeaseData extends Data
         #[WithTransformer(DateTimeInterfaceTransformer::class, format: 'Y-m-d')]
         public DateTime $lease_start_date,
 
-        #[Required, GreaterThanOrEqualTo(1), LessThanOrEqualTo(29)]
+        #[Required, GreaterThanOrEqualTo(1), LessThanOrEqualTo(31)]
         public int $monthly_due_date,
 
         #[Required]

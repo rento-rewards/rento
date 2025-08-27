@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -81,7 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $query = $this->reports();
         if ($scope === 'this_year') {
-            $query->whereYear('created_at', Carbon::now()->year);
+            $query->whereYear('reports.created_at', Carbon::now()->year);
         }
         return $query->selectRaw('status, COUNT(*) as count')
             ->groupBy('status')

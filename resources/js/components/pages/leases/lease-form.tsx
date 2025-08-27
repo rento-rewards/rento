@@ -185,7 +185,9 @@ export default function LeaseForm(props: LeaseFormProps) {
                         step="0.01"
                         value={data.rent_amount}
                         className={'peer ps-9'}
-                        onChange={(e) => setData("rent_amount", parseFloat(e.target.value))}
+                        onChange={(e) => {
+                            setData('rent_amount', parseFloat(e.target.value));
+                        }}
                         required
                     />
                     <div
@@ -235,7 +237,7 @@ export default function LeaseForm(props: LeaseFormProps) {
                                     {formatOrdinals(day + 1)}
                                 </SelectItem>
                             ))}
-                            <SelectItem value="29">last</SelectItem>
+                            <SelectItem value="31">last</SelectItem>
                         </SelectContent>
                     </Select>
                     <InputError message={errors.monthly_due_date} className="mt-2" />

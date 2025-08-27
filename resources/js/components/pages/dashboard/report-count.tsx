@@ -57,8 +57,8 @@ export default function ReportCount(props: Props) {
 
     return <Card data-chart={id} className={cn('flex flex-col', className)} {...rest}>
         <ChartStyle id={id} config={chartConfig} />
-        <CardHeader>
-            <CardTitle className="pb-2">
+        <CardHeader className="flex-row justify-between">
+            <CardTitle>
                 Report Count
             </CardTitle>
             <Select value={option} onValueChange={setOption}>

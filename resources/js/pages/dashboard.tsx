@@ -7,6 +7,7 @@ import Greeting from '@/components/pages/dashboard/greeting';
 import RecentReportTable from '@/components/pages/dashboard/recent-report-table';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import NextDue, { NextDueLease } from '@/components/pages/dashboard/next-due';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,7 +22,8 @@ type Props = {
         report_counts: {
             all_time: ReportCountData,
             this_year: ReportCountData
-        }
+        },
+        next_due: NextDueLease[]
     }
 }
 
@@ -36,15 +38,7 @@ export default function Dashboard(props: Props) {
                 <Greeting />
                 <div className="grid md:grid-cols-2 gap-4">
                     <ReportCount reportCounts={dashboard.report_counts} />
-                    <Card className="flex flex-col">
-                        <CardHeader>
-                            <CardTitle>
-                                Next Due
-                            </CardTitle>
-                        </CardHeader>
-                    </Card>
-                    {/*<TotalReportedAmount />*/}
-                    {/*<EquifaxReport />*/}
+                    <NextDue nextDues={dashboard.next_due} />
                 </div>
                 <div className="space-y-4">
                     <h2 className="text-xl font-semibold">
