@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'interac' => [
+        'client_id' => env('INTERAC_CLIENT_ID'),
+        'client_secret' => '',
+        'redirect'  => env('INTERAC_REDIRECT_URI'),
+        'discovery'=> env('INTERAC_DISCOVERY'),
+        'private_key' => storage_path('app/keys/interac-private.pem'),
+        'public_key' => storage_path('app/keys/interac-public.pem'),
+        'kid' => env('INTERAC_KEY_ID')
+    ],
 ];
