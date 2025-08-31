@@ -29,7 +29,7 @@ export default function Component() {
         <header
             className={`sticky top-0 z-50 w-full backdrop-blur-lg transition-all duration-300 ${isScrolled ? 'bg-background/80 shadow-sm' : 'bg-transparent'}`}
         >
-            <div className="flex h-16 items-center justify-between mx-auto min-w-screen-lg px-8">
+            <div className="flex h-16 items-center justify-between mx-auto max-w-screen-xl px-8">
                 <Link className="inline-flex items-center gap-2 font-bold" href="/">
                     <LandingLogo color="text-primary" height={20} />
                 </Link>
@@ -79,7 +79,7 @@ export default function Component() {
                     exit={{ opacity: 0, y: -20 }}
                     className="md:hidden absolute top-16 inset-x-0 bg-background/95 backdrop-blur-lg border-b"
                 >
-                    <div className="max-w-screen-lg mx-auto px-8 py-4 flex flex-col gap-4">
+                    <div className="max-w-screen-xl mx-auto px-8 py-4 flex flex-col gap-4">
                         {navigationLinks.map((link) => (
                             <Link
                                 key={link.href}
@@ -93,7 +93,7 @@ export default function Component() {
                     </div>
                     <div className="flex flex-col gap-2">
                         {auth.user ? (
-                            <Button asChild className="m-4 w-full max-w-screen-lg mx-auto px-8">
+                            <Button asChild className="m-4 w-full max-w-screen-xl mx-auto px-8">
                                 <Link
                                     href={route('dashboard')}
                                     onClick={() => setMobileMenuOpen(false)}
@@ -102,7 +102,7 @@ export default function Component() {
                                 </Link>
                             </Button>
                         ) : (
-                            <div className="max-w-screen-lg w-full  mx-auto px-8 flex gap-4 m-4">
+                            <div className="max-w-screen-xl w-full  mx-auto px-8 flex gap-4 m-4">
                                 <Button asChild variant="outline" className="flex-1">
                                     <Link href={route('login')} onClick={() => setMobileMenuOpen(false)}>Log in</Link>
                                 </Button>
