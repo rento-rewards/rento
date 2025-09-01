@@ -1,3 +1,5 @@
+import PayRentIllustration from '@/components/pages/landing/illustrations/pay-rent';
+
 export default function HowItWorks() {
     return (
         <section>
@@ -27,6 +29,7 @@ export default function HowItWorks() {
                                         changes needed.
                                     </p>
                                 </div>
+                                <PayRentIllustration />
                             </div>
                             <div className="group space-y-6">
                                 <div>
