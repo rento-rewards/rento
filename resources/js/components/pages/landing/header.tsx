@@ -13,8 +13,8 @@ const navigationLinks = [
 ];
 
 export default function Component() {
-    const [isScrolled, setIsScrolled] = useState(false)
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { auth } = usePage<SharedData>().props;
 
     useEffect(() => {
@@ -91,9 +91,9 @@ export default function Component() {
                             </Link>
                         ))}
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="max-w-screen-xl w-full mx-auto px-8 flex gap-4 m-4">
                         {auth.user ? (
-                            <Button asChild className="m-4 w-full max-w-screen-xl mx-auto px-8">
+                            <Button asChild className="m-4 w-full max-w-screen-xl mx-auto x-8">
                                 <Link
                                     href={route('dashboard')}
                                     onClick={() => setMobileMenuOpen(false)}
@@ -101,15 +101,15 @@ export default function Component() {
                                     Dashboard <ChevronRight />
                                 </Link>
                             </Button>
-                        ) : (
-                            <div className="max-w-screen-xl w-full  mx-auto px-8 flex gap-4 m-4">
+                        ) : (<>
                                 <Button asChild variant="outline" className="flex-1">
                                     <Link href={route('login')} onClick={() => setMobileMenuOpen(false)}>Log in</Link>
                                 </Button>
                                 <Button asChild className="flex-1">
-                                    <Link href={route('register')} onClick={() => setMobileMenuOpen(false)}>Get started</Link>
+                                    <Link href={route('register')} onClick={() => setMobileMenuOpen(false)}>Get
+                                        started</Link>
                                 </Button>
-                            </div>
+                            </>
                         )}
                     </div>
                 </motion.div>
