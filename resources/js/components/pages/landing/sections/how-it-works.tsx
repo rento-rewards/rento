@@ -1,4 +1,6 @@
 import PayRentIllustration from '@/components/pages/landing/illustrations/pay-rent';
+import RentReportIllustration from '@/components/pages/landing/illustrations/rent-report';
+import BuildCreditIllustration from '@/components/pages/landing/illustrations/build-credit';
 
 export default function HowItWorks() {
     return (
@@ -45,6 +47,7 @@ export default function HowItWorks() {
                                         Let us know when you’ve paid—it’s quick, simple, and only takes a moment.
                                     </p>
                                 </div>
+                                <RentReportIllustration />
                             </div>
                             <div className="group space-y-6">
                                 <div>
@@ -61,6 +64,7 @@ export default function HowItWorks() {
                                         score month after month.
                                     </p>
                                 </div>
+                                <BuildCreditIllustration />
                             </div>
                         </div>
                     </div>
