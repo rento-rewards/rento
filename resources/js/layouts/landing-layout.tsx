@@ -10,7 +10,7 @@ export default function LandingLayout({children}: Props) {
     return (
         <div className="flex min-h-[100dvh] flex-col">
             <Header />
-            <main className="flex-grow">
+            <main className="flex flex-col flex-grow">
                 {children}
             </main>
             <Footer />
