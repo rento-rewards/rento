@@ -5,8 +5,8 @@ import { register } from '@/routes';
 
 export default function CallToActionSection() {
     return <section>
-        <div className="bg-muted py-12">
-            <div className="mx-auto max-w-screen-xl px-8">
+        <div className="bg-muted py-24">
+            <div className="mx-auto max-w-screen-xl px-8 flex flex-col items-center text-center text-balance">
                 <h2 className="text-foreground max-w-lg text-balance text-3xl font-semibold lg:text-4xl">
                     Start Building Credit Score With Your Rent
                 </h2>
