@@ -8,8 +8,8 @@ const links = [
         group: 'Product',
         items: [
             {
-                title: 'Features',
-                href: '#features',
+                title: 'Home',
+                href: route('home'),
             },
             {
                 title: 'Pricing',
@@ -22,11 +22,11 @@ const links = [
         items: [
             {
                 title: 'Privacy Policy',
-                href: '#',
+                href: route('legal.privacy-policy'),
             },
             {
                 title: 'Terms and Conditions',
-                href: '#',
+                href: route('legal.terms-of-service'),
             },
         ],
     },
