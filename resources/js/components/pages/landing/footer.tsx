@@ -55,7 +55,7 @@ export default function FooterSection() {
                         </div>
                     </div>
 
-                    <div className="col-span-3 grid grid-cols-3 gap-6">
+                    <div className="col-span-3 grid grid-cols-2 gap-6">
                         {links.map((link, index) => (
                             <div
                                 key={index}
