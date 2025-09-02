@@ -10,6 +10,7 @@ import {
 import { CircleAlert } from 'lucide-react';
 import { Form } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
+import { destroy } from '@/routes/leases';
 
 type LeaseDeleteDialogProps = {
     lease: App.Data.Leases.LeaseDetailData
@@ -36,8 +37,7 @@ export default function LeaseDeleteDialog({ lease, ...rest }: LeaseDeleteDialogP
             </div>
             <DialogFooter>
                 <Form
-                    method="delete"
-                    action={route('leases.destroy', lease)}
+                    {...destroy.form(lease)}
                     className="flex gap-4 w-full justify-end"
                     disableWhileProcessing
                 >

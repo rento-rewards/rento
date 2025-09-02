@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form } from '@inertiajs/react';
 import { useRef } from 'react';
+import { destroy } from '@/routes/profile';
 
 export default function DeleteUser() {
     const passwordInput = useRef<HTMLInputElement>(null);
@@ -31,8 +32,7 @@ export default function DeleteUser() {
                         </DialogDescription>
 
                         <Form
-                            method="delete"
-                            action={route('profile.destroy')}
+                            {...destroy.form()}
                             options={{
                                 preserveScroll: true,
                             }}

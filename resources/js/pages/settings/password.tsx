@@ -10,6 +10,7 @@ import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { update } from '@/routes/password';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -31,8 +32,7 @@ export default function Password() {
                     <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
 
                     <Form
-                        method="put"
-                        action={route('password.update')}
+                        {...update.form()}
                         options={{
                             preserveScroll: true,
                         }}

@@ -13,9 +13,10 @@ import SingleDocumentUpload from '@/components/single-document-upload';
 import { UploadOption } from '@/types';
 import { FormEvent } from 'react';
 import axios from 'axios';
+import { extract, store, update } from '@/routes/leases';
 
 type LeaseFormProps = {
-    defaultValues?: App.Data.Leases.LeaseData & { id: string };
+    defaultValues?: App.Data.Leases.LeaseData & { id: number };
     uploadOption: UploadOption;
 }
 
@@ -42,21 +43,16 @@ export default function LeaseForm(props: LeaseFormProps) {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (defaultValues) {
-            put(route("leases.update", {
-                data: {
-                    ...data,
-                    id: defaultValues.id
-                }
-            }));
+            put(update.url({ id: defaultValues.id }))
         } else {
-            post(route("leases.store"));
+            post(store.url());
         }
     }
 
     const handleUpload = (file: any) => {
         const form = new FormData();
         form.append("document", file);
-        axios.post(route("leases.extract"), form).then(response => {
+        axios.post(extract.url(), form).then(response => {
             setData("document", file);
             console.log(response);
         })
