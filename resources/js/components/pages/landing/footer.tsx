@@ -3,18 +3,19 @@ import LandingLogo from '@/components/pages/landing/logo';
 import { Mail, Phone } from 'lucide-react';
 import AppearanceTabs from '@/components/appearance-tabs';
 import legal from '@/routes/legal';
+import { home, pricing } from '@/routes';
 
 const links = [
     {
-        group: 'Product',
+        group: 'Rento',
         items: [
             {
                 title: 'Home',
-                href: "/",
+                href: home(),
             },
             {
                 title: 'Pricing',
-                href: '#pricing',
+                href: pricing(),
             }
         ],
     },

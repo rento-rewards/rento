@@ -6,11 +6,11 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'motion/react';
 import LandingLogo from '@/components/pages/landing/logo';
-import { dashboard, login, register } from '@/routes';
+import { dashboard, home, login, pricing, register } from '@/routes';
 
 const navigationLinks = [
-    { href: '#features', label: 'Features' },
-    { href: '#pricing', label: 'Pricing' }
+    { href: home(), label: 'Home' },
+    { href: pricing(), label: 'Pricing' }
 ];
 
 export default function Component() {
@@ -37,7 +37,7 @@ export default function Component() {
                 <nav className="hidden md:flex gap-8">
                     {navigationLinks.map((link) => (
                         <Link
-                            key={link.href}
+                            key={link.href.url}
                             href={link.href}
                             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                         >
@@ -83,7 +83,7 @@ export default function Component() {
                     <div className="max-w-screen-xl mx-auto px-8 py-4 flex flex-col gap-4">
                         {navigationLinks.map((link) => (
                             <Link
-                                key={link.href}
+                                key={link.href.url}
                                 href={link.href}
                                 className="py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                                 onClick={() => setMobileMenuOpen(false)}
