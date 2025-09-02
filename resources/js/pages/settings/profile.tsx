@@ -15,7 +15,11 @@ import { send } from '@/routes/verification';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Profile settings',
+        title: 'Settings',
+        href: '/settings',
+    },
+    {
+        title: 'Profile',
         href: '/settings/profile',
     },
 ];
@@ -25,7 +29,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Profile settings" />
+            <Head title="Profile" />
 
             <SettingsLayout>
                 <div className="space-y-6">

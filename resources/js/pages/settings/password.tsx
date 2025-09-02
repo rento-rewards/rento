@@ -14,7 +14,11 @@ import { update } from '@/routes/password';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Password settings',
+        title: 'Settings',
+        href: '/settings',
+    },
+    {
+        title: 'Password',
         href: '/settings/password',
     },
 ];
@@ -25,7 +29,7 @@ export default function Password() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Password settings" />
+            <Head title="Password" />
 
             <SettingsLayout>
                 <div className="space-y-6">
