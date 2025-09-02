@@ -6,7 +6,7 @@ import { prefersDark, useAppearance } from '@/hooks/use-appearance';
 export default function HeroSection() {
     const { appearance } = useAppearance();
 
-    return <section className="bg-linear-to-b to-muted from-background">
+    return <section className="bg-linear-to-b to-muted from-background overflow-x-hidden">
         <div className="relative py-36">
             <div className="relative z-10 mx-auto w-full max-w-screen-xl px-6">
                 <div className="md:w-1/2">
