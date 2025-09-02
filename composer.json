@@ -20,7 +20,6 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "spatie/laravel-data": "^4.17",
         "spatie/laravel-typescript-transformer": "^2.5",
-        "tightenco/ziggy": "^2.4"
         "web-token/jwt-framework": "^4.0"
     },
     "require-dev": {
