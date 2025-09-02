@@ -12,6 +12,8 @@ import { FormEvent } from 'react';
 import { UploadOption } from '@/types';
 import { FileMetadata } from '@/hooks/use-file-upload';
 import ReportData = App.Data.Reports.ReportFormData;
+import { processStep2 } from '@/actions/App/Http/Controllers/ReportController';
+import { step1 } from '@/routes/reports/create';
 
 type Props = {
     lease: App.Data.Leases.LeaseData & { id: string },
@@ -42,7 +44,7 @@ export default function ReportCreateStep2({ lease, report, upload_option, proof_
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        post(route('reports.store.step2'));
+        processStep2.post();
     };
 
     return (
@@ -153,7 +155,7 @@ export default function ReportCreateStep2({ lease, report, upload_option, proof_
 
                         <div className="@md/report-form:col-span-2 flex justify-end gap-2">
                             <Button type="button" variant="outline" asChild>
-                                <Link href={route('reports.create.step1')}>
+                                <Link href={step1()}>
                                     Back
                                 </Link>
                             </Button>

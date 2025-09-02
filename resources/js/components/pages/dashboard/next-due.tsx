@@ -5,6 +5,7 @@ import { currencyFormatter, dateFormatter } from '@/lib/formatters';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Home } from 'lucide-react';
 import { Link } from '@inertiajs/react';
+import { create } from '@/routes/reports';
 
 export type NextDueLease = App.Data.Leases.LeaseDetailData & {
     next_due_date: string;
@@ -64,7 +65,7 @@ export default function NextDue(props: Props) {
             <CardFooter className="flex w-full gap-4 items-center justify-end">
                 <p className="text-sm text-muted-foreground">Already paid your rent?</p>
                 <Button>
-                    <Link href={route('reports.create', { lease_id: lease.id })} className="inline-flex items-center gap-1">
+                    <Link href={create({ query: { lease_id: lease.id }})} className="inline-flex items-center gap-1">
                         Report now
                     </Link>
                 </Button>

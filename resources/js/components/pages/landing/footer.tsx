@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import LandingLogo from '@/components/pages/landing/logo';
 import { Mail, Phone } from 'lucide-react';
 import AppearanceTabs from '@/components/appearance-tabs';
+import legal from '@/routes/legal';
 
 const links = [
     {
@@ -9,7 +10,7 @@ const links = [
         items: [
             {
                 title: 'Home',
-                href: route('home'),
+                href: "/",
             },
             {
                 title: 'Pricing',
@@ -22,11 +23,11 @@ const links = [
         items: [
             {
                 title: 'Privacy Policy',
-                href: route('legal.privacy-policy'),
+                href: legal.privacyPolicy(),
             },
             {
-                title: 'Terms and Conditions',
-                href: route('legal.terms-of-service'),
+                title: 'Terms of Service',
+                href: legal.termsOfService()
             },
         ],
     },
@@ -64,6 +65,7 @@ export default function FooterSection() {
                                     <Link
                                         key={index}
                                         href={item.href}
+                                        prefetch
                                         className="text-muted-foreground hover:text-primary block duration-150">
                                         <span>{item.title}</span>
                                     </Link>

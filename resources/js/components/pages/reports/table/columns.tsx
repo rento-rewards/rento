@@ -5,6 +5,7 @@ import { Link } from '@inertiajs/react';
 import { ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { show } from '@/routes/reports';
 
 export const columns: ColumnDef<App.Data.Reports.ReportTableData>[] = [
     {
@@ -72,7 +73,7 @@ export const columns: ColumnDef<App.Data.Reports.ReportTableData>[] = [
             return (
                 <div className="flex">
                     <Button className="ml-auto" size="icon" variant="ghost" asChild>
-                        <Link href={route('reports.show', { id })}>
+                        <Link href={show({ id })}>
                             <ChevronRight size={16} />
                         </Link>
                     </Button>

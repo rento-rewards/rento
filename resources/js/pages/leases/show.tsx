@@ -7,6 +7,9 @@ import { Download, Edit2, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
 import LeaseDeleteDialog from '@/components/pages/leases/lease-delete-dialog';
 import ReportTable from '@/components/pages/reports/report-table';
+import { leases } from '@/routes';
+import { download, edit } from '@/routes/leases';
+import { create, show } from '@/routes/reports';
 
 type LeaseShowProps = {
     lease: App.Data.Leases.LeaseDetailData,
@@ -18,7 +21,7 @@ export default function LeaseShow({ lease, reports }: LeaseShowProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Leases',
-            href: route('leases')
+            href: leases.url()
         },
         {
             title: lease.address_line_1,
@@ -35,7 +38,7 @@ export default function LeaseShow({ lease, reports }: LeaseShowProps) {
                 </h2>
                 <div className="flex gap-2">
                     <Button variant="outline" asChild>
-                        <Link href={route('leases.edit', lease)} prefetch>
+                        <Link href={edit(lease)} prefetch>
                             <Edit2 />
                             Edit
                         </Link>
@@ -44,12 +47,12 @@ export default function LeaseShow({ lease, reports }: LeaseShowProps) {
                         <Trash /> Delete
                     </Button>
                     <Button asChild className="ms-auto" variant="outline">
-                        <a href={route('leases.download', lease)}>
+                        <a href={download(lease).url}>
                             <Download /> Lease Document
                         </a>
                     </Button>
                     <Button asChild>
-                        <Link href={route('reports.create', { lease_id: lease.id })}>
+                        <Link href={create({ query: { lease_id: lease.id } })} prefetch className="ml-auto">
                             <Plus />
                             New Report
                         </Link>
@@ -60,7 +63,7 @@ export default function LeaseShow({ lease, reports }: LeaseShowProps) {
                 <div className="space-y-4">
                     <h3 className="text-2xl font-semibold tracking-tight">Reports</h3>
                     <ReportTable reports={reports} handlePerPageChange={(value) => {
-                        router.visit(route('leases.show', { lease, per_page: value }), {
+                        router.visit(show(lease, { query: { per_page: value }}), {
                             only: ["reports"],
                             preserveState: true,
                         });

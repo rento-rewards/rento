@@ -8,6 +8,8 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { LoaderCircle } from 'lucide-react';
 import { currencyFormatter, formatOrdinals } from '@/lib/formatters';
+import { store } from '@/routes/reports';
+import ReportController from '@/actions/App/Http/Controllers/ReportController';
 
 type Props = {
     leases: (App.Data.Leases.LeaseData & { id: string })[],
@@ -20,9 +22,10 @@ export default function ReportCreateStep1({ leases, lease_id }: Props) {
             <Head title="New Report - Step 1" />
             <div className="w-full @container/report-form">
                 <ReportFormStepper className="border-b border-border" value={1} />
-                <Form method="post" action={route('reports.store.step1')}
-                      disableWhileProcessing
-                      className="mx-auto p-4 space-y-4 max-w-screen-md">
+                <Form
+                    {...ReportController.processStep1.form()}
+                    disableWhileProcessing
+                    className="mx-auto p-4 space-y-4 max-w-screen-md">
                     {({ processing, errors }) => (
                         <>
                             <InputError message={errors.lease_id} />
@@ -64,7 +67,7 @@ export default function ReportCreateStep1({ leases, lease_id }: Props) {
                             <div className="flex justify-end">
                                 <Button type="submit">
                                     {processing ? (
-                                            <LoaderCircle className="animate-spin" />
+                                        <LoaderCircle className="animate-spin" />
                                     ) : (
                                         'Next'
                                     )}

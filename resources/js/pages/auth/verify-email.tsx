@@ -5,6 +5,8 @@ import { LoaderCircle } from 'lucide-react';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/auth-layout';
+import { send } from '@/routes/verification';
+import { logout } from '@/routes';
 
 export default function VerifyEmail({ status }: { status?: string }) {
     return (
@@ -17,7 +19,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                 </div>
             )}
 
-            <Form method="post" action={route('verification.send')} className="space-y-6 text-center">
+            <Form method="post" action={send()} className="space-y-6 text-center">
                 {({ processing }) => (
                     <>
                         <Button disabled={processing} variant="secondary">
@@ -25,7 +27,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                             Resend verification email
                         </Button>
 
-                        <TextLink href={route('logout')} method="post" className="mx-auto block text-sm">
+                        <TextLink href={logout()} method="post" className="mx-auto block text-sm">
                             Log out
                         </TextLink>
                     </>

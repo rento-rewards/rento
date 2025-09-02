@@ -4,11 +4,12 @@ import ReportFormStepper from '@/components/pages/reports/form-stepper';
 import { useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-
 import { currencyFormatter, dateFormatter, formatMonth, formatOrdinals } from '@/lib/formatters';
 import { MailIcon, Paperclip, PhoneIcon, UserIcon } from 'lucide-react';
 import { formatPhoneNumber } from 'react-phone-number-input';
 import { FileMetadata } from '@/hooks/use-file-upload';
+import { step1, step2 } from '@/routes/reports/create';
+import ReportController from '@/actions/App/Http/Controllers/ReportController';
 
 type Props = {
     report: App.Data.Reports.ReportFormData,
@@ -17,7 +18,6 @@ type Props = {
 }
 
 export default function ReportCreateStep3({ report, lease, proof_of_payment }: Props) {
-    console.log(proof_of_payment);
     const [section, setSection] = useState<'lease' | 'payment'>('lease');
     return (
         <ReportLayout>
@@ -48,7 +48,7 @@ export default function ReportCreateStep3({ report, lease, proof_of_payment }: P
                                 <div>{currencyFormatter.format(lease.rent_amount)}</div>
                                 <div>
                                     {lease.monthly_due_date > 28
-                                        ? "Due on last day of the month"
+                                        ? 'Due on last day of the month'
                                         : `Due on every ${formatOrdinals(lease.monthly_due_date)}`}
                                 </div>
                             </div>
@@ -71,7 +71,7 @@ export default function ReportCreateStep3({ report, lease, proof_of_payment }: P
                             </div>
                             <div className="flex gap-2">
                                 <Button type="button" variant="outline" asChild>
-                                    <Link href={route('reports.create.step1')}>
+                                    <Link href={step1()}>
                                         Edit
                                     </Link>
                                 </Button>
@@ -82,7 +82,7 @@ export default function ReportCreateStep3({ report, lease, proof_of_payment }: P
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="payment">
-                        <AccordionTrigger onClick={() => setSection("payment")}>
+                        <AccordionTrigger onClick={() => setSection('payment')}>
                             Rent Report
                         </AccordionTrigger>
                         <AccordionContent className="space-y-8 mt-4">
@@ -112,18 +112,19 @@ export default function ReportCreateStep3({ report, lease, proof_of_payment }: P
                                 </strong>
                             </div>
                             <Button variant="outline" asChild>
-                                <Link href={route('reports.create.step2')}>
+                                <Link href={step2()}>
                                     Edit
                                 </Link>
                             </Button>
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
-                <Form method="post" action={route('reports.store')} className="flex justify-end p-4 max-w-screen-md mx-auto space-x-2">
+                <Form {...ReportController.store.form()}
+                      className="flex justify-end p-4 max-w-screen-md mx-auto space-x-2">
                     {({ processing }) => (
                         <>
                             <Button variant="outline" type="button" asChild>
-                                <Link href={route('reports.create.step2')}>
+                                <Link href={step2()}>
                                     Back
                                 </Link>
                             </Button>

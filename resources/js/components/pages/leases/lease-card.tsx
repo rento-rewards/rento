@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
 import LeaseDeleteDialog from '@/components/pages/leases/lease-delete-dialog';
 import { currencyFormatter, formatOrdinals } from '@/lib/formatters';
+import { show, edit } from '@/routes/leases';
 
 type Props = {
     lease: App.Data.Leases.LeaseDetailData;
@@ -33,7 +34,7 @@ export default function LeaseCard({ lease }: Props) {
                 <CardHeader>
                     <CardTitle>
                         <Link
-                            href={route('leases.show', lease)}
+                            href={show(lease)}
                             className="before:absolute before:inset-0"
                             prefetch
                         >
@@ -57,7 +58,7 @@ export default function LeaseCard({ lease }: Props) {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuItem asChild>
-                                    <Link href={route('leases.edit', lease)} prefetch>
+                                    <Link href={edit(lease)} prefetch>
                                         <Edit2Icon className="opacity-60" aria-hidden />
                                         Edit
                                     </Link>

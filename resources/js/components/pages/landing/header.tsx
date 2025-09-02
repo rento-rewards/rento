@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'motion/react';
 import LandingLogo from '@/components/pages/landing/logo';
+import { dashboard, login, register } from '@/routes';
 
 const navigationLinks = [
     { href: '#features', label: 'Features' },
@@ -48,7 +49,7 @@ export default function Component() {
                     {auth.user ? (
                         <Button asChild>
                             <Link
-                                href={route('dashboard')}
+                                href={dashboard()}
                             >
                                 Dashboard <ChevronRight />
                             </Link>
@@ -56,10 +57,10 @@ export default function Component() {
                     ) : (
                         <>
                             <Button asChild variant="ghost">
-                                <Link href={route('login')}>Log in</Link>
+                                <Link href={login()}>Log in</Link>
                             </Button>
                             <Button asChild>
-                                <Link href={route('register')}>Get started</Link>
+                                <Link href={register()}>Get started</Link>
                             </Button>
                         </>
                     )}
@@ -95,7 +96,7 @@ export default function Component() {
                         {auth.user ? (
                             <Button asChild className="m-4 w-full max-w-screen-xl mx-auto x-8">
                                 <Link
-                                    href={route('dashboard')}
+                                    href={dashboard()}
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     Dashboard <ChevronRight />
@@ -103,10 +104,10 @@ export default function Component() {
                             </Button>
                         ) : (<>
                                 <Button asChild variant="outline" className="flex-1">
-                                    <Link href={route('login')} onClick={() => setMobileMenuOpen(false)}>Log in</Link>
+                                    <Link href={login()} onClick={() => setMobileMenuOpen(false)}>Log in</Link>
                                 </Button>
                                 <Button asChild className="flex-1">
-                                    <Link href={route('register')} onClick={() => setMobileMenuOpen(false)}>Get
+                                    <Link href={register()} onClick={() => setMobileMenuOpen(false)}>Get
                                         started</Link>
                                 </Button>
                             </>

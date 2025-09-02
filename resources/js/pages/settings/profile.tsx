@@ -10,6 +10,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import { update } from '@/routes/profile';
+import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
+import { send } from '@/routes/verification';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -30,8 +33,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                     <HeadingSmall title="Profile information" description="Update your name and email address" />
 
                     <Form
-                        method="patch"
-                        action={route('profile.update')}
+                        {...ProfileController.update.form()}
                         options={{
                             preserveScroll: true,
                         }}
@@ -93,8 +95,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         <p className="-mt-4 text-sm text-muted-foreground">
                                             Your email address is unverified.{' '}
                                             <Link
-                                                href={route('verification.send')}
-                                                method="post"
+                                                href={send()}
                                                 as="button"
                                                 className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                                             >

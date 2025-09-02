@@ -1,15 +1,17 @@
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, Timestamp } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { BreadcrumbItem } from '@/types';
+import { Head } from '@inertiajs/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { currencyFormatter, dateFormatter } from '@/lib/formatters';
 import { Download, Mail, Phone, User } from 'lucide-react';
 import { formatPhoneNumber } from 'react-phone-number-input';
 import ReportStatus from '@/components/pages/reports/report-status';
 import { Button } from '@/components/ui/button';
+import { download } from '@/routes/reports/proof';
+import { reports } from '@/routes';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Reports', href: route('reports') },
+    { title: 'Reports', href: reports().url },
     { title: 'Report Details', href: '' }
 ];
 
@@ -24,7 +26,7 @@ export default function ReportShow({ report, lease }: Props) {
         <div className="@container w-full p-4 space-y-4">
             <div className="flex justify-end">
                 <Button asChild>
-                    <a href={route('reports.proof.download', report)}>
+                    <a href={download(report).url}>
                         <Download />
                         Proof of Payment
                     </a>

@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import { Link } from '@inertiajs/react';
 import { prefersDark, useAppearance } from '@/hooks/use-appearance';
+import { register } from '@/routes';
 
 export default function HeroSection() {
     const { appearance } = useAppearance();
@@ -21,7 +22,7 @@ export default function HeroSection() {
                                 asChild
                                 size="lg"
                                 className="pr-4.5">
-                                <Link href={route('register')}>
+                                <Link href={register()}>
                                     <span className="text-nowrap">Get Started</span>
                                     <ChevronRight className="opacity-50" />
                                 </Link>

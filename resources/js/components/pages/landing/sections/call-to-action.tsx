@@ -1,6 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import { Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
+import { register } from '@/routes';
 
 export default function CallToActionSection() {
     return <section>
@@ -14,7 +15,7 @@ export default function CallToActionSection() {
                     <Button
                         asChild
                         className="pr-2">
-                        <Link href={route('register')}>
+                        <Link href={register()}>
                             Try Rento for Free
                             <ChevronRight
                                 strokeWidth={2.5}

@@ -3,7 +3,9 @@ import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
-import LeaseCard, { LeaseDataWithId } from '@/components/pages/leases/lease-card';
+import LeaseCard from '@/components/pages/leases/lease-card';
+import { create } from '@/routes/leases';
+import LeaseData = App.Data.Leases.LeaseData;
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -13,7 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 type LeaseIndexProps = {
-    leases?: LeaseDataWithId[]
+    leases?: (LeaseData & { id: number})[],
 }
 
 export default function LeaseIndex(props: LeaseIndexProps) {
@@ -24,7 +26,7 @@ export default function LeaseIndex(props: LeaseIndexProps) {
             <Head title="Leases" />
             <div className="flex w-full flex-1 flex-col gap-8 p-4 @container max-w-screen-lg mx-auto">
                 <Button asChild>
-                    <Link href={route("leases.create")} prefetch className="ml-auto">
+                    <Link href={create()} prefetch className="ml-auto">
                         <Plus />
                         Create Lease
                     </Link>

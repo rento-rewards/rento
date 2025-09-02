@@ -8,6 +8,7 @@ import RecentReportTable from '@/components/pages/dashboard/recent-report-table'
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import NextDue, { NextDueLease } from '@/components/pages/dashboard/next-due';
+import { reports } from '@/routes';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -46,7 +47,7 @@ export default function Dashboard(props: Props) {
                     </h2>
                     <RecentReportTable reports={dashboard.recent_reports} />
                     <Button variant="link" className="px-0">
-                        <Link href={route('reports')} className="inline-flex items-center gap-1">
+                        <Link href={reports()} className="inline-flex items-center gap-1">
                             View All Reports <ArrowRight size={24} />
                         </Link>
                     </Button>
