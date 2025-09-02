@@ -28,7 +28,6 @@ const MONTHS = [
 ];
 
 export default function ReportCreateStep2({ lease, report, upload_option, proof_of_payment }: Props) {
-    console.log({ report, proof_of_payment });
     const {
         data, processing, setData, post,
         // @ts-ignore
@@ -44,7 +43,8 @@ export default function ReportCreateStep2({ lease, report, upload_option, proof_
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        processStep2.post();
+        console.log('handleSubmit');
+        post(processStep2.url())
     };
 
     return (
