@@ -5,7 +5,7 @@ import FeaturesSection from '@/components/pages/landing/sections/features';
 import HowItWorks from '@/components/pages/landing/sections/how-it-works';
 import { BenefitsSection } from '@/components/pages/landing/sections/benifits';
 
-export default function Welcome() {
+export default function Home() {
     return (
         <LandingLayout>
             <HeroSection />

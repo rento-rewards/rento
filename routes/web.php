@@ -6,7 +6,7 @@ use Inertia\Inertia;
 
 
 Route::get('/', function () {
-    return Inertia::render('welcome', []);
+    return Inertia::render('home', []);
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
