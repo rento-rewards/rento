@@ -25,12 +25,17 @@ class SubscriptionController extends Controller
 
     public function index(Request $request): Response
     {
-        $plan = null;
-        if ($request->user()->subscribed($this->subscription_id)) {
-            $plan = $request->user()->subscription($this->subscription_id)->stripe_price;
-        }
+        $user = $request->user();
+        $plan = $user->subscription($this->subscription_id)?->stripe_price;
+        $payment_method = $user->defaultPaymentMethod()?->card;
         return Inertia::render('settings/subscription', [
             'currentPlan' => $plan == $this->monthly_price_id ? 'monthly' : ($plan == $this->annually_price_id ? 'yearly' : null),
+            'paymentMethod' => $payment_method ? [
+                'brand' => $payment_method->brand,
+                'last4' => $payment_method->last4,
+                'exp_month' => $payment_method->exp_month,
+                'exp_year' => $payment_method->exp_year,
+            ] : null,
         ]);
     }
 

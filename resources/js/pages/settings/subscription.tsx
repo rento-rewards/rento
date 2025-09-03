@@ -19,7 +19,6 @@ import CardInputs from '@/components/payments/card-inputs';
 import { subscribe } from '@/routes/subscription';
 import { router } from '@inertiajs/react';
 import { CircleAlert, CircleCheckIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -45,12 +44,18 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY!);
 type Props = {
     flash: FlashMessage,
     currentPlan?: string,
+    paymentMethod?: {
+        brand: string,
+        last4: string,
+        exp_month: number,
+        exp_year: number
+    }
 }
 
 export default function Subscription(props: Props) {
-    const { flash, currentPlan } = props;
+    const { flash, currentPlan, paymentMethod } = props;
     const [choice, setChoice] = useState(currentPlan || 'monthly');
-    console.log(props);
+    console.log(paymentMethod);
 
     const processSubscription = useCallback((method: PaymentMethod) => {
         const url = subscribe.url({ query: { plan: getPriceId(choice), payment_method: method.id } });
