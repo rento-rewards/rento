@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,7 +23,6 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('settings/appearance', []);
     })->name('appearance');
 
-    Route::get('settings/subscription', function () {
-        return Inertia::render('settings/subscription', []);
-    })->name('subscription');
+    Route::get('settings/subscription', [SubscriptionController::class, 'index'])->name('subscription');
+    Route::post('settings/subscription', [SubscriptionController::class, 'subscribe'])->name('subscription.subscribe');
 });

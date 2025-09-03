@@ -53,6 +53,11 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    public function getNameAttribute(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
     public function leases(): HasMany
     {
         return $this->hasMany(Lease::class, 'tenant_id');
