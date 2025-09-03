@@ -72,3 +72,8 @@ export interface LaravelPagination<T> {
     to: number | null;
     total: number;
 }
+
+export interface FlashMessage {
+    success?: string;
+    error?: string;
+}
