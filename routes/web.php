@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LegalController;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +19,8 @@ Route::get('/legal/privacy-policy', [LegalController::class, 'privacyPolicy'])->
 Route::get('/legal/terms-of-service', [LegalController::class, 'termsOfService'])->name('legal.terms-of-service');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/checkout/{plan}', CheckoutController::class)->name('checkout');
 });
 
 require __DIR__.'/settings.php';

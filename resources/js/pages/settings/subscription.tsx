@@ -6,8 +6,8 @@ import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { checkout } from '@/routes';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -19,6 +19,13 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/settings/subscription'
     }
 ];
+
+function getPriceId(choice: string): string {
+    if (choice === 'monthly') {
+        return import.meta.env.VITE_STRIPE_MONTHLY_PRICE_ID!;
+    }
+    return import.meta.env.VITE_STRIPE_ANNUAL_PRICE_ID!;
+}
 
 export default function Subscription() {
     const [choice, setChoice] = useState('monthly');
@@ -74,7 +81,11 @@ export default function Subscription() {
                             </div>
                         </div>
                     </RadioGroup>
-                    <Button>Subscribe</Button>
+                    <Button asChild>
+                        <a href={checkout.url({ plan: getPriceId(choice) })}>
+                            Subscribe
+                        </a>
+                    </Button>
                 </div>
             </SettingsLayout>
         </AppLayout>
