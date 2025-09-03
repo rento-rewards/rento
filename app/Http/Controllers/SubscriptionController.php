@@ -12,14 +12,30 @@ use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class SubscriptionController extends Controller
 {
+    protected string $subscription_id;
+    protected string $monthly_price_id;
+    protected string $annually_price_id;
+
+    public function __construct()
+    {
+        $this->subscription_id = env('STRIPE_SUBSCRIPTION_ID');
+        $this->monthly_price_id = env('STRIPE_MONTHLY_PRICE_ID');
+        $this->annually_price_id = env('STRIPE_ANNUAL_PRICE_ID');
+    }
+
     public function index(Request $request): Response
     {
-        return Inertia::render('settings/subscription', []);
+        $plan = null;
+        if ($request->user()->subscribed($this->subscription_id)) {
+            $plan = $request->user()->subscription($this->subscription_id)->stripe_price;
+        }
+        return Inertia::render('settings/subscription', [
+            'currentPlan' => $plan == $this->monthly_price_id ? 'monthly' : ($plan == $this->annually_price_id ? 'yearly' : null),
+        ]);
     }
 
     public function subscribe(Request $request): RedirectResponse
     {
-        $subscription_id = env('STRIPE_SUBSCRIPTION_ID');
         $plan = $request->get('plan');
         $payment_method = $request->get('payment_method');
         $user = $request->user();
@@ -29,7 +45,7 @@ class SubscriptionController extends Controller
         try {
             $trial_until = $user->created_at->addDays(7);
 
-            $subscription = $user->newSubscription($subscription_id, $plan);
+            $subscription = $user->newSubscription($this->subscription_id, $plan);
 
             if ($trial_until->isFuture()) {
                 $subscription->trialUntil($trial_until);
@@ -39,7 +55,6 @@ class SubscriptionController extends Controller
                 'email' => $user->email,
                 'name' => $user->name,
             ]);
-
             return to_route('subscription')->with(['success' => 'Subscription successful!']);
         } catch (IncompletePayment) {
             return to_route('subscription')->with(['error' => 'Incomplete Payment!']);

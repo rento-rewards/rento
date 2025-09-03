@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import HeadingSmall from '@/components/heading-small';
 import { Head } from '@inertiajs/react';
-import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useCallback, useState } from 'react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -19,6 +19,8 @@ import CardInputs from '@/components/payments/card-inputs';
 import { subscribe } from '@/routes/subscription';
 import { router } from '@inertiajs/react';
 import { CircleAlert, CircleCheckIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -41,13 +43,15 @@ function getPriceId(choice: string): string {
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY!);
 
 type Props = {
-    flash: FlashMessage
+    flash: FlashMessage,
+    currentPlan?: string,
 }
 
 export default function Subscription(props: Props) {
-    const { flash } = props;
+    const { flash, currentPlan } = props;
+    const [choice, setChoice] = useState(currentPlan || 'monthly');
+    console.log(props);
 
-    const [choice, setChoice] = useState('monthly');
     const processSubscription = useCallback((method: PaymentMethod) => {
         const url = subscribe.url({ query: { plan: getPriceId(choice), payment_method: method.id } });
         router.post(url);
@@ -70,7 +74,8 @@ export default function Subscription(props: Props) {
                             />
                             <div className="grid grow gap-2">
                                 <Label htmlFor="plan-monthly">
-                                    Monthly
+                                    Monthly{" "}
+                                    {currentPlan === "monthly" && <Badge>Current</Badge>}
                                 </Label>
                                 <div className="text-muted-foreground mt-2 space-y-2">
                                     <p>
@@ -88,11 +93,12 @@ export default function Subscription(props: Props) {
                                 className="order-1 after:absolute after:inset-0"
                             />
                             <div className="grid grow gap-2">
-                                <Label htmlFor="plan-annually">
-                                    Annually{' '}
+                                <Label htmlFor="plan-annually space-x-2">
+                                    Annually{" "}
                                     <span className="text-emerald-500 text-xs leading-[inherit] font-normal">
                                         40% off
-                                    </span>
+                                    </span>{" "}
+                                    {currentPlan === "annually" && <Badge>Current</Badge>}
                                 </Label>
                                 <div className="text-muted-foreground mt-2 space-y-2">
                                     <p>
@@ -123,9 +129,9 @@ export default function Subscription(props: Props) {
                             {flash.error}
                         </p>
                     </div>}
-                    <Elements stripe={stripePromise}>
+                    {!currentPlan && <Elements stripe={stripePromise}>
                         <CreditCardForm processSubscription={processSubscription} />
-                    </Elements>
+                    </Elements>}
                 </div>
             </SettingsLayout>
         </AppLayout>
