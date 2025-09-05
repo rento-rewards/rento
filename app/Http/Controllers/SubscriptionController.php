@@ -63,4 +63,29 @@ class SubscriptionController extends Controller
             return to_route('subscription')->with(['error' => 'An error occurred while processing your subscription. Please try again.']);
         }
     }
+
+    public function cancel(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        $subscription = $user->subscription($this->subscription_id);
+
+        if (!$subscription || $subscription->ended()) {
+            return to_route('subscription')->with(['error' => 'No active subscription found to cancel.']);
+        }
+        $subscription->cancel();
+        return to_route('subscription')->with(['success' => 'Subscription cancelled successfully. You will retain access until the end of the billing period.']);
+    }
+
+    public function resume(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        $subscription = $user->subscription($this->subscription_id);
+
+        if (!$subscription || !$subscription->onGracePeriod()) {
+            return to_route('subscription')->with(['error' => 'No cancelled subscription found to resume.']);
+        }
+
+        $subscription->resume();
+        return to_route('subscription')->with(['success' => 'Subscription resumed successfully.']);
+    }
 }

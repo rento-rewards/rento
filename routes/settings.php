@@ -25,4 +25,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/subscription', [SubscriptionController::class, 'index'])->name('subscription');
     Route::post('settings/subscription', [SubscriptionController::class, 'subscribe'])->name('subscription.subscribe');
+    Route::post('settings/subscription/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
+    Route::post('settings/subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
 });
