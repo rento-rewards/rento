@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
-import { CreditCard, RectangleEllipsis, SwatchBook, User } from 'lucide-react';
+import { Badge, CircleDollarSign, CreditCard, RectangleEllipsis, SwatchBook, User } from 'lucide-react';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -19,15 +19,20 @@ const sidebarNavItems: NavItem[] = [
         icon: RectangleEllipsis,
     },
     {
+        title: 'Subscription',
+        href: '/settings/subscription',
+        icon: Badge
+    },
+    {
+        title: 'Billing',
+        href: '/settings/billing',
+        icon: CircleDollarSign
+    },
+    {
         title: 'Appearance',
         href: '/settings/appearance',
         icon: SwatchBook,
     },
-    {
-        title: 'Subscription',
-        href: '/settings/subscription',
-        icon: CreditCard
-    }
 ];
 
 export default function SettingsLayout({ children }: PropsWithChildren) {

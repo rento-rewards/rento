@@ -14,9 +14,9 @@ export default function CurrentPlan(props: Props) {
                 <div className="text-sm font-semibold mb-2">{type === 'monthly' ? 'Monthly' : 'Yearly'}</div>
                 <div className="text-muted-foreground">
                     <p>
-                            <span
-                                className="text-foreground text-2xl font-bold">${type === 'monthly' ? 5 : 3}</span> per
-                        month
+                        <span className="text-foreground text-2xl font-bold">
+                            ${type === 'monthly' ? 5 : 3}
+                        </span> per month
                     </p>
                     <p className="text-sm mt-2">{
                         type === 'monthly'
