@@ -9,6 +9,8 @@ import {
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CreditCardForm from '@/components/payments/credit-card-form';
+import { router } from '@inertiajs/react';
+import { store } from '@/routes/billing';
 
 export default function AddNewPaymentMethod() {
     return <Dialog>
@@ -24,7 +26,11 @@ export default function AddNewPaymentMethod() {
                     Enter your new payment information below.
                 </DialogDescription>
             </DialogHeader>
-            <CreditCardForm processPaymentMethod={console.log} />
+            <CreditCardForm processPaymentMethod={(paymentMethod) =>{
+                router.post(store.url(), {
+                    payment_method_id: paymentMethod.id
+                })
+            }} />
         </DialogContent>
     </Dialog>;
 }

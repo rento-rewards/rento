@@ -7,12 +7,12 @@ import {
     DialogTrigger
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { loadStripe } from '@stripe/stripe-js';
 import CreditCardForm from '@/components/payments/credit-card-form';
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY!);
+import { router } from '@inertiajs/react';
+import { store } from '@/routes/billing';
 
 export default function UpdatePaymentMethod() {
+
     return <Dialog>
         <DialogTrigger asChild>
             <Button variant="outline">Update</Button>
@@ -24,7 +24,11 @@ export default function UpdatePaymentMethod() {
                     Enter your new payment information below.
                 </DialogDescription>
             </DialogHeader>
-            <CreditCardForm processPaymentMethod={console.log} />
+            <CreditCardForm processPaymentMethod={(paymentMethod) => {
+                router.post(store.url(), {
+                    payment_method_id: paymentMethod.id
+                })
+            }} />
         </DialogContent>
     </Dialog>;
 }
