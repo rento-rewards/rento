@@ -1,8 +1,7 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import SubscriptionData = App.Data.Subscription.SubscriptionData;
-import { Button } from '@/components/ui/button';
 import { dateFormatter } from '@/lib/formatters';
 import CancelSubscriptionButton from '@/components/subscriptions/cancel-subscription-button';
+import ChangePlanButton from '@/components/subscriptions/change-plan-button';
 
 type Props = Pick<SubscriptionData, 'type' | 'next_billing_date'>;
 
@@ -34,9 +33,7 @@ export default function CurrentPlan(props: Props) {
             </div>
         </div>
         <div className="flex flex-wrap gap-2 items-end-safe">
-            <Button variant="outline">
-                Change Plan
-            </Button>
+            <ChangePlanButton currentPlan={type} />
             <CancelSubscriptionButton endDate={new Date(next_billing_date)} />
         </div>
     </div>;
