@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Data\Subscription\SubscriptionData;
 use App\Data\Subscription\SubscriptionFormData;
+use App\Data\Subscription\SubscriptionUpdateData;
 use App\Enums\SubscriptionType;
 use Carbon\Carbon;
 use Exception;
@@ -87,5 +88,23 @@ class SubscriptionController extends Controller
 
         $subscription->resume();
         return to_route('subscription')->with(['success' => 'Subscription resumed successfully.']);
+    }
+
+    public function update(SubscriptionUpdateData $data): RedirectResponse
+    {
+        $user = auth()->user();
+        $subscription = $user->subscription($this->subscription_id);
+
+        if (!$subscription || $subscription->ended()) {
+            return to_route('subscription')->with(['error' => 'No active subscription found to update.']);
+        }
+
+        try {
+            $subscription->swap($data->type->getId());
+            return to_route('subscription')->with(['success' => 'Subscription updated successfully.']);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return to_route('subscription')->with(['error' => 'An error occurred while updating your subscription. Please try again.']);
+        }
     }
 }
