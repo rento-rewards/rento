@@ -6,25 +6,25 @@ use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::middleware('auth')->group(function () {
-    Route::redirect('settings', '/settings/profile');
+Route::prefix('settings')->middleware('auth')->group(function () {
+    Route::redirect('/', '/settings/profile');
 
-    Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('settings/password', [PasswordController::class, 'edit'])->name('password.edit');
-
-    Route::put('settings/password', [PasswordController::class, 'update'])
+    Route::get('password', [PasswordController::class, 'edit'])->name('password.edit');
+    Route::put('password', [PasswordController::class, 'update'])
         ->middleware('throttle:6,1')
         ->name('password.update');
 
-    Route::get('settings/appearance', function () {
+    Route::get('appearance', function () {
         return Inertia::render('settings/appearance', []);
     })->name('appearance');
 
-    Route::get('settings/subscription', [SubscriptionController::class, 'index'])->name('subscription');
-    Route::post('settings/subscription', [SubscriptionController::class, 'subscribe'])->name('subscription.subscribe');
-    Route::post('settings/subscription/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
-    Route::post('settings/subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
+    Route::get('subscription', [SubscriptionController::class, 'index'])->name('subscription');
+    Route::post('subscription', [SubscriptionController::class, 'subscribe'])->name('subscription.subscribe');
+    Route::post('subscription/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
+    Route::post('subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
+    Route::patch('subscription', [SubscriptionController::class, 'update'])->name('subscription.update');
 });
