@@ -30,4 +30,5 @@ Route::prefix('settings')->middleware('auth')->group(function () {
     Route::patch('subscription', [SubscriptionController::class, 'update'])->name('subscription.update');
 
     Route::get('billing', [BillingController::class, 'index'])->name('billing');
+    Route::post('billing', [BillingController::class, 'store'])->name('billing.store');
 });
