@@ -1,7 +1,6 @@
 import { loadStripe, PaymentMethod } from '@stripe/stripe-js';
 import { CardNumberElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { FormEvent, useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import CardInputs from '@/components/payments/card-inputs';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -19,7 +18,7 @@ export default function(props: Props) {
     </Elements>;
 }
 
-export function CreditCardForm({ processPayment, className }: Props) {
+function CreditCardForm({ processPayment, className }: Props) {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
