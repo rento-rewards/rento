@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY!);
 
 type Props = {
-    processPayment: (method: PaymentMethod) => void,
+    processPaymentMethod: (method: PaymentMethod) => void,
     className?: string
 }
 
@@ -18,7 +18,7 @@ export default function(props: Props) {
     </Elements>;
 }
 
-function CreditCardForm({ processPayment, className }: Props) {
+function CreditCardForm({ processPaymentMethod, className }: Props) {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
@@ -41,14 +41,14 @@ function CreditCardForm({ processPayment, className }: Props) {
             return;
         }
 
-        processPayment(paymentMethod);
+        processPaymentMethod(paymentMethod);
         setLoading(false);
     };
 
-    return <form className={cn('space-y-4', className)} onSubmit={handleSubmit}>
+    return <form className={cn('space-y-4 @container', className)} onSubmit={handleSubmit}>
         <CardInputs />
-        <Button type="submit" disabled={!stripe || loading}>
-            {loading ? 'Processing...' : 'Subscribe'}
+        <Button type="submit" className="w-full" disabled={!stripe || loading}>
+            {loading ? 'Processing...' : 'Submit'}
         </Button>
     </form>;
 

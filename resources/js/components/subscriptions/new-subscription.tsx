@@ -59,6 +59,6 @@ export default function NewSubscription() {
                 </div>
             </div>
         </RadioGroup>
-        <CreditCardForm processPayment={handleNewSubscription} />
+        <CreditCardForm processPaymentMethod={handleNewSubscription} />
     </>;
 }

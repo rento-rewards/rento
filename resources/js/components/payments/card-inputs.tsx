@@ -49,7 +49,7 @@ export default function CardInputs() {
                 </div>
             </div>
         </div>
-        <div className="grid @md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
                 <Label htmlFor="expiry">Expiry</Label>
                 <CardExpiryElement options={{ style: cardStyle }}
