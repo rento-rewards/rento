@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BillingController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\SubscriptionController;
@@ -27,4 +28,6 @@ Route::prefix('settings')->middleware('auth')->group(function () {
     Route::post('subscription/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
     Route::post('subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
     Route::patch('subscription', [SubscriptionController::class, 'update'])->name('subscription.update');
+
+    Route::get('billing', [BillingController::class, 'index'])->name('billing');
 });
