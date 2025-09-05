@@ -56,9 +56,29 @@ id: number;
 created_at: string;
 payment_amount: number;
 payment_date: string;
+due_month: number;
+due_year: number;
 status: App.Enums.ReportStatus;
+};
+}
+declare namespace App.Data.Subscription {
+export type PaymentMethodData = {
+brand: string;
+last4: string;
+exp_month: number;
+exp_year: number;
+};
+export type SubscriptionData = {
+type: App.Enums.SubscriptionType;
+payment_method: App.Data.Subscription.PaymentMethodData;
+next_billing_date: string;
+};
+export type SubscriptionFormData = {
+type: App.Enums.SubscriptionType;
+payment_method_id: string;
 };
 }
 declare namespace App.Enums {
 export type ReportStatus = 'created' | 'verified' | 'reported';
+export type SubscriptionType = 'monthly' | 'yearly';
 }
