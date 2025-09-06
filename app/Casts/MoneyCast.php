@@ -4,8 +4,12 @@ namespace App\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\LaravelData\Casts\Cast;
+use Spatie\LaravelData\Casts\Castable;
+use Spatie\LaravelData\Support\Creation\CreationContext;
+use Spatie\LaravelData\Support\DataProperty;
 
-class MoneyCast implements CastsAttributes
+class MoneyCast implements CastsAttributes, Cast
 {
     public function get(Model $model, string $key, mixed $value, array $attributes)
     {
@@ -15,5 +19,10 @@ class MoneyCast implements CastsAttributes
     public function set(Model $model, string $key, mixed $value, array $attributes)
     {
         return round(floatval($value) * 100);
+    }
+
+    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): mixed
+    {
+        return round(floatval($value) / 100, precision: 2);
     }
 }

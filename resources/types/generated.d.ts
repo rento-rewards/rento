@@ -62,6 +62,12 @@ status: App.Enums.ReportStatus;
 };
 }
 declare namespace App.Data.Subscription {
+export type InvoiceTableData = {
+id: string;
+date: string;
+total: string;
+status: App.Enums.PaymentStatus;
+};
 export type PaymentMethodData = {
 brand: string;
 last4: string;
@@ -79,6 +85,7 @@ payment_method_id: string;
 };
 }
 declare namespace App.Enums {
+export type PaymentStatus = 'paid' | 'uncollectible' | 'void' | 'open' | 'draft';
 export type ReportStatus = 'created' | 'verified' | 'reported';
 export type SubscriptionType = 'monthly' | 'yearly';
 }
