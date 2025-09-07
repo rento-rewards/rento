@@ -18,14 +18,24 @@ class VerificationController extends Controller
 
     public function callback(Request $request)
     {
-        Log::info('Interac callback', $request->all());
+        $code = $request->get('code');
+        if (!$code) {
+            return redirect()->route('dashboard')->with(['error' => 'Interac verification failed. Please try again.']);
+        }
         try {
             $user = Socialite::driver('interac')->user();
-            Log::info($user->toArray());
-            redirect()->route('dashboard');
+
+            $request->user()->interac()->create([
+                'sub' => $user->getId(),
+                'payload' => json_encode($user->user),
+                'document_type' => $user->user['doc_type'],
+                'expiry_date' => $user->user['expiry_date'],
+            ]);
+
+            return redirect()->route('dashboard')->with('success', 'Interac verification successful.');
         } catch (Exception $e) {
             Log::error('Interac callback error', ['error' => $e]);
-            return redirect()->route('dashboard')->withErrors(['msg' => 'Interac verification failed. Please try again.']);
+            return redirect()->route('dashboard')->with(['error' => 'Interac verification failed. Please try again.']);
         }
     }
 }

@@ -7,9 +7,9 @@ use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Two\AbstractProvider;
-use Laravel\Socialite\Two\ProviderInterface;
+use Laravel\Socialite\Two\User;
 
-class InteracProvider extends AbstractProvider implements ProviderInterface
+class InteracProvider extends AbstractProvider
 {
     protected $scopes = ['openid', 'general_scope'];
     protected $scopeSeparator = ' ';
@@ -44,11 +44,6 @@ class InteracProvider extends AbstractProvider implements ProviderInterface
         return $this->buildAuthUrlFromBase($cfg['authorization_endpoint'], $state);
     }
 
-    protected function getTokenHeaders($code): array
-    {
-        return [];
-    }
-
     protected function getTokenFields($code): array
     {
         $fields = parent::getTokenFields($code);
@@ -65,15 +60,14 @@ class InteracProvider extends AbstractProvider implements ProviderInterface
             'jti' => Str::uuid()->getHex()->toString(),
         ];
 
-        $jwt = JWT::encode(
+        $jws = JWT::encode(
             $payload,
             file_get_contents(config('services.interac.private_key')),
             'RS256',
             config('service.interac.kid'),
-            ['alg' => 'RS256', 'kid' => config('services.interac.kid')]
         );
 
-        $fields['client_assertion'] = $jwt;
+        $fields['client_assertion'] = $jws;
 
         return $fields;
     }
@@ -91,11 +85,17 @@ class InteracProvider extends AbstractProvider implements ProviderInterface
                 'Authorization' => 'Bearer ' . $token,
             ]
         ]);
+        Log::info($response->getBody());
         return json_decode($response->getBody(), true);
     }
 
-    protected function mapUserToObject(array $user)
+    protected function mapUserToObject(array $user): User
     {
-        Log::info('user', $user);
+        $name = ($user['given_name'] ?? '') . ' ' . ($user['family_name'] ?? '');
+        return (new User)->setRaw($user)->map([
+            'id' => $user['sub'],
+            'name' => trim($name) ?: null,
+            'date_of_birth' => $user['birthdate'] ?? null,
+        ]);
     }
 }

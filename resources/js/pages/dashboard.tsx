@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, FlashMessage } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import ReportCount, { ReportCountData } from '@/components/pages/dashboard/report-count';
 import Greeting from '@/components/pages/dashboard/greeting';
@@ -9,6 +9,7 @@ import { ArrowRight } from 'lucide-react';
 import NextDue, { NextDueLease } from '@/components/pages/dashboard/next-due';
 import IdVerificationBanner from '@/components/pages/dashboard/id-verification-banner';
 import { reports } from '@/routes';
+import AlertMessage from '@/components/alert-message';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -18,6 +19,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 type Props = {
+    flash: FlashMessage,
     dashboard: {
         recent_reports: App.Data.Reports.ReportTableData[],
         has_id_verification: boolean,
@@ -30,14 +32,27 @@ type Props = {
 }
 
 export default function Dashboard(props: Props) {
-    const { dashboard } = props;
-    console.log(dashboard);
+    const { flash, dashboard } = props;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div
                 className="flex h-full flex-1 flex-col gap-12 rounded-xl p-4 w-full max-w-screen-lg mx-auto">
                 <Greeting />
+                {
+                    flash.success && (
+                        <AlertMessage variant="success">
+                            {flash.success}
+                        </AlertMessage>
+                    )
+                }
+                {
+                    flash.error && (
+                        <AlertMessage variant="error">
+                            {flash.error}
+                        </AlertMessage>
+                    )
+                }
                 {!dashboard.has_id_verification && (
                     <IdVerificationBanner />
                 )}
