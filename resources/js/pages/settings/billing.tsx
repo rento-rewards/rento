@@ -8,6 +8,10 @@ import CreditCardDisplay from '@/components/payments/credit-card-display';
 import PaymentMethodData = App.Data.Subscription.PaymentMethodData;
 import UpdatePaymentMethod from '@/components/payments/update-payment-method';
 import AddNewPaymentMethod from '@/components/payments/add-new-payment-method';
+import { Button } from '@/components/ui/button';
+import { ChevronRight } from 'lucide-react';
+import InvoiceTableData = App.Data.Subscription.InvoiceTableData;
+import InvoiceTable from '@/components/pages/invoices/invoice-table';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -22,11 +26,16 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 type Props = {
     flash: FlashMessage,
-    payment_method?: PaymentMethodData
+    payment_method?: PaymentMethodData,
+    invoices: {
+        data: InvoiceTableData[],
+        has_more: boolean,
+        last_invoice?: string
+    }
 }
 
 export default function Billing(props: Props) {
-    const { flash, payment_method } = props;
+    const { flash, payment_method, invoices } = props;
     return <AppLayout breadcrumbs={breadcrumbs}>
         <Head title="Billing" />
         <SettingsLayout>
@@ -46,6 +55,10 @@ export default function Billing(props: Props) {
                     </div>
                     {payment_method ? <CreditCardDisplay card={payment_method} />
                         : <AddNewPaymentMethod />}
+                </div>
+                <div className="flex flex-col gap-2">
+                    <h4 className="font-semibold">Invoices</h4>
+                    <InvoiceTable invoices={invoices.data} />
                 </div>
             </div>
         </SettingsLayout>
