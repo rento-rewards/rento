@@ -20,11 +20,11 @@ export const columns: ColumnDef<App.Data.Subscription.InvoiceTableData>[] = [
     },
     {
         accessorKey: 'total',
-        header: () => <div className="text-center">Amount</div>,
+        header: () => <div className="text-right">Amount</div>,
         size: 100,
         cell: ({ row }) => {
             return (
-                <div className="text-center font-medium">
+                <div className="text-right font-medium">
                     {currencyFormatter.format(Number(row.original.total))}
                 </div>);
         }
