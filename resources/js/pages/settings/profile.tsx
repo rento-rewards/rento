@@ -12,6 +12,7 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { send } from '@/routes/verification';
+import IdentityVerification from '@/components/id-verification';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -24,8 +25,15 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
+type Props = {
+    mustVerifyEmail: boolean;
+    idVerified: boolean;
+    status?: string;
+}
+
+export default function Profile(props: Props) {
     const { auth } = usePage<SharedData>().props;
+    const { mustVerifyEmail, status, idVerified } = props;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -132,6 +140,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                     </Form>
                 </div>
 
+                <IdentityVerification verified={idVerified} />
                 <DeleteUser />
             </SettingsLayout>
         </AppLayout>

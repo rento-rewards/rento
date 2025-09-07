@@ -1,6 +1,7 @@
-import { IdCard } from "lucide-react"
+import { ArrowRight, IdCard } from 'lucide-react';
 
 import { Button } from "@/components/ui/button"
+import verification from '@/routes/verification';
 
 export default function IdVerificationBanner() {
     return (
@@ -13,7 +14,7 @@ export default function IdVerificationBanner() {
                     >
                         <IdCard className="opacity-80" size={16} />
                     </div>
-                    <div className="flex grow flex-col justify-between gap-3 md:flex-row md:items-center">
+                    <div className="flex grow flex-col justify-between gap-12 md:flex-row md:items-center">
                         <div className="space-y-0.5">
                             <p className="text-sm font-medium">
                                 Please verify your identity
@@ -24,8 +25,8 @@ export default function IdVerificationBanner() {
                         </div>
                         <div className="flex gap-2 max-md:flex-wrap">
                             <Button size="sm" className="text-sm" asChild>
-                                <a href={route("verification.start")}>
-                                    Verify now
+                                <a href={verification.start.url()}>
+                                    Verify
                                 </a>
                             </Button>
                         </div>
