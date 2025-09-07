@@ -7,48 +7,41 @@ use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Two\AbstractProvider;
+use Laravel\Socialite\Two\ProviderInterface;
 
-class InteracProvider extends AbstractProvider
+class InteracProvider extends AbstractProvider implements ProviderInterface
 {
     protected $scopes = ['openid', 'general_scope'];
     protected $scopeSeparator = ' ';
     protected $usesPKCE = true;
 
-    protected function getAuthUrl($state): string
+    protected function getCodeFields($state = null): array
     {
         $cfg = OpenIdDiscovery::config();
+        $fields = parent::getCodeFields($state);
 
         $payload = [
             'aud' => $cfg['issuer'],
             'iss' => $this->clientId,
-            'client_id' => $this->clientId,
-            'redirect_uri' => $this->redirectUrl,
-            'response_type' => 'code',
-            'scope' => implode(' ', $this->scopes),
             'state' => $state,
             'nonce' => Str::uuid()->toString(),
-            'code_challenge' => $this->getCodeChallenge(),
-            'code_challenge_method' => $this->getCodeChallengeMethod(),
+            ...$fields
         ];
-
-        $jwt = JWT::encode(
+        $jws = JWT::encode(
             $payload,
             file_get_contents(config('services.interac.private_key')),
             'RS256',
-            config('service.interac.kid'),
-            ['alg' => 'RS256', 'kid' => config('services.interac.kid')]
+            config('services.interac.kid'),
         );
+        $fields['request'] = $jws;
 
-        $query = http_build_query([
-            'request'      => $jwt,
-            'state'        => $state,
-            'client_id'    => $this->clientId,
-            'redirect_uri' => $this->redirectUrl,
-            'scope'        => implode(' ', $this->scopes),
-            'response_type'=> 'code',
-        ]);
+        return $fields;
+    }
 
-        return $cfg['authorization_endpoint'] . '?' . $query;
+    protected function getAuthUrl($state): string
+    {
+        $cfg = OpenIdDiscovery::config();
+        return $this->buildAuthUrlFromBase($cfg['authorization_endpoint'], $state);
     }
 
     protected function getTokenHeaders($code): array

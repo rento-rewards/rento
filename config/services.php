@@ -42,6 +42,6 @@ return [
         'discovery'=> env('INTERAC_DISCOVERY'),
         'private_key' => storage_path('app/keys/interac-private.pem'),
         'public_key' => storage_path('app/keys/interac-public.pem'),
-        'kid' => env('INTERAC_KEY_ID')
+        'kid' => env('INTERAC_JWT_KID')
     ],
 ];
