@@ -10,10 +10,11 @@ import { Button } from '@/components/ui/button';
 import CreditCardForm from '@/components/payments/credit-card-form';
 import { router } from '@inertiajs/react';
 import { store } from '@/routes/billing';
+import { useState } from 'react';
 
 export default function UpdatePaymentMethod() {
-
-    return <Dialog>
+    const [open, setOpen] = useState(false);
+    return <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
             <Button variant="outline">Update</Button>
         </DialogTrigger>
@@ -27,6 +28,8 @@ export default function UpdatePaymentMethod() {
             <CreditCardForm processPaymentMethod={(paymentMethod) => {
                 router.post(store.url(), {
                     payment_method_id: paymentMethod.id
+                }, {
+                    onSuccess: () => setOpen(false)
                 })
             }} />
         </DialogContent>

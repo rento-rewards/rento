@@ -21,9 +21,10 @@ const VALUE = 'cancel my subscription';
 
 export default function CancelSubscriptionButton(props: Props) {
     const { endDate } = props;
+    const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
 
-    return <AlertDialog>
+    return <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogTrigger>
             <Button variant="destructive">Cancel Subscription</Button>
         </AlertDialogTrigger>
@@ -53,7 +54,7 @@ export default function CancelSubscriptionButton(props: Props) {
                     </div>
                 </AlertDialogDescription>
             </AlertDialogHeader>
-            <Form {...cancel.form()}>
+            <Form {...cancel.form()} onSuccess={() => setOpen(false)}>
                 {({ processing }) => (
                     <AlertDialogFooter>
                         <AlertDialogCancel type="button">Go Back</AlertDialogCancel>

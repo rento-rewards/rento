@@ -12,28 +12,30 @@ import SubscriptionType = App.Enums.SubscriptionType;
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import { update } from '@/routes/subscription';
+import SubscriptionData = App.Data.Subscription.SubscriptionData;
 
 type Props = {
-    currentPlan: SubscriptionType
+    currentPlan: SubscriptionData
 }
 
 export default function ChangePlanButton(props: Props) {
     const { currentPlan } = props;
     const { data, setData, processing, patch } = useForm({
-        type: currentPlan
+        type: currentPlan.type
     });
+    const [open, setOpen] = useState(false);
 
     const handlePlanSwitch = (e: FormEvent) => {
         e.preventDefault();
-        if (data.type === currentPlan) {
+        if (data.type === currentPlan.type) {
             return;
         }
-        patch(update.url())
+        patch(update.url(), { onSuccess: () => setOpen(false) });
     }
 
-    return <Dialog>
+    return <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
             <Button variant="outline">
                 Switch Plan
@@ -59,7 +61,7 @@ export default function ChangePlanButton(props: Props) {
                         <div className="grid grow gap-2">
                             <Label className="flex items-baseline gap-2" htmlFor="switch-monthly">
                                 <span>Monthly</span>
-                                {currentPlan === "monthly" && <Badge>Current</Badge>}
+                                {currentPlan.type === "monthly" && <Badge>Current</Badge>}
                             </Label>
                             <p className="text-xs">
                                 <span className="text-lg font-semibold">$5</span> per month
@@ -81,7 +83,7 @@ export default function ChangePlanButton(props: Props) {
                                 <span>
                                     Yearly
                                 </span>
-                                {currentPlan === "yearly" ? <Badge>Current</Badge> : <span className="text-primary text-xs">Save 40%</span>}
+                                {currentPlan.type === "yearly" ? <Badge>Current</Badge> : <span className="text-primary text-xs">Save 40%</span>}
                             </Label>
                             <p className="text-xs">
                                 <span className="text-lg font-semibold">$3</span> per month
@@ -98,7 +100,7 @@ export default function ChangePlanButton(props: Props) {
                             Keep Current Plan
                         </Button>
                     </DialogClose>
-                    <Button disabled={processing || data.type === currentPlan}>
+                    <Button disabled={processing || data.type === currentPlan.type}>
                         {processing ? 'Switching...' : 'Switch Plan'}
                     </Button>
                 </DialogFooter>

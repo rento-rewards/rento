@@ -40,7 +40,7 @@ export default function Subscription(props: Props) {
                     {flash.error && <AlertMessage variant="error">
                         {flash.error}
                     </AlertMessage>}
-                    {current_plan ? <CurrentPlan {...current_plan} /> : <NewSubscription />}
+                    {current_plan ? <CurrentPlan currentPlan={current_plan} /> : <NewSubscription />}
                 </div>
             </SettingsLayout>
         </AppLayout>

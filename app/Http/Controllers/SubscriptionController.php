@@ -36,6 +36,7 @@ class SubscriptionController extends Controller
             'type' => SubscriptionType::fromId($price_id),
             'payment_method' => $payment_method?->toArray(),
             'next_billing_date' => $next_billing_date ? Carbon::createFromTimestamp($next_billing_date) : null,
+            'on_grace_period' => $subscription?->onGracePeriod() ?? false,
         ]);
 
         return Inertia::render('settings/subscription', [

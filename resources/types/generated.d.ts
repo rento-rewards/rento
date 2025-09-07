@@ -78,6 +78,7 @@ export type SubscriptionData = {
 type: App.Enums.SubscriptionType;
 payment_method: App.Data.Subscription.PaymentMethodData;
 next_billing_date: string;
+on_grace_period: boolean;
 };
 export type SubscriptionFormData = {
 type: App.Enums.SubscriptionType;
