@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BillingController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\SubscriptionController;
@@ -31,4 +32,5 @@ Route::prefix('settings')->middleware('auth')->group(function () {
 
     Route::get('billing', [BillingController::class, 'index'])->name('billing');
     Route::post('billing', [BillingController::class, 'store'])->name('billing.store');
+    Route::get('billing/invoices', [InvoiceController::class, 'index'])->name('billing.invoices');
 });
