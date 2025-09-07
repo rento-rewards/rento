@@ -18,8 +18,16 @@ class InvoiceController extends Controller
 
     public function index(Request $request): Response
     {
+        $customer_id = $request->user()->stripe_id;
+        if (!$customer_id) {
+            return Inertia::render('settings/billing/invoices', [
+                'invoices' => InvoiceTableData::collect([]),
+                'has_more' => false,
+            ]);
+        }
+
         $params = [
-            'customer' => $request->user()->stripe_id,
+            'customer' => $customer_id,
         ];
 
         $last_invoice = $request->query('last_invoice');

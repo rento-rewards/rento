@@ -16,7 +16,7 @@ export default function BillingLayout({ children }: PropsWithChildren) {
     const currentPath = window.location.pathname;
 
     return (
-        <div className="space-y-6">
+        <div className="flex flex-col gap-6">
             <HeadingSmall title="Billing" description="Manage your payment information and invoices" />
             <Tabs value={currentPath}>
                 <TabsList className="bg-transparent">
