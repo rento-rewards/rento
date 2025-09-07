@@ -1,4 +1,4 @@
-import { ArrowRight, IdCard } from 'lucide-react';
+import { IdCard } from 'lucide-react';
 
 import { Button } from "@/components/ui/button"
 import verification from '@/routes/verification';
@@ -14,7 +14,7 @@ export default function IdVerificationBanner() {
                     >
                         <IdCard className="opacity-80" size={16} />
                     </div>
-                    <div className="flex grow flex-col justify-between gap-12 md:flex-row md:items-center">
+                    <div className="flex grow flex-col justify-between gap-x-12 gap-y-3 md:flex-row md:items-center">
                         <div className="space-y-0.5">
                             <p className="text-sm font-medium">
                                 Please verify your identity
