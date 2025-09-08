@@ -20,7 +20,7 @@ export default function NextDue(props: Props) {
     const canGoPrev = index > 0;
     const canGoNext = index < props.nextDues.length - 1;
     const { nextDues, className, ...rest } = props;
-    const lease = nextDues[index];
+    const lease = nextDues.at(index);
     return (
         <Card className={cn(className)} {...rest}>
             <CardHeader className="flex-row justify-between">
@@ -48,28 +48,31 @@ export default function NextDue(props: Props) {
                     </Button>
                 </div>
             </CardHeader>
-            <CardContent className="flex-1 space-y-4">
-                <p className="text-4xl font-bold">{currencyFormatter.format(lease.rent_amount)}</p>
-                <p className="text-muted-foreground">Due on {dateFormatter.format(new Date(lease.next_due_date))}</p>
-                <div className="flex gap-4 items-start">
-                    <Home size={24} className="text-muted-foreground"></Home>
-                    <div>
-                        <p className="text-muted-foreground">Address</p>
-                        {lease.address_line_2 ? <p>{lease.address_line_2}</p> : null}
-                        <p>{lease.address_line_1}</p>
-                        <p>{lease.city}</p>
-                        <p>{lease.province} {lease.postal_code}</p>
+            <CardContent className="flex flex-col flex-1">
+                {lease ? <>
+                    <p className="text-4xl font-bold">{currencyFormatter.format(lease.rent_amount)}</p>
+                    <p className="text-muted-foreground">Due
+                        on {dateFormatter.format(new Date(lease.next_due_date))}</p>
+                    <div className="flex gap-4 items-start">
+                        <Home size={24} className="text-muted-foreground"></Home>
+                        <div>
+                            <p className="text-muted-foreground">Address</p>
+                            {lease.address_line_2 ? <p>{lease.address_line_2}</p> : null}
+                            <p>{lease.address_line_1}</p>
+                            <p>{lease.city}</p>
+                            <p>{lease.province} {lease.postal_code}</p>
+                        </div>
                     </div>
-                </div>
+                </> : <p className="text-muted-foreground mx-auto my-auto">No upcoming payments</p>}
             </CardContent>
-            <CardFooter className="flex w-full gap-4 items-center justify-end">
+            {lease && <CardFooter className="flex w-full gap-4 items-center justify-end">
                 <p className="text-sm text-muted-foreground">Already paid your rent?</p>
                 <Button>
-                    <Link href={create({ query: { lease_id: lease.id }})} className="inline-flex items-center gap-1">
+                    <Link href={create({ query: { lease_id: lease.id } })} className="inline-flex items-center gap-1">
                         Report now
                     </Link>
                 </Button>
-            </CardFooter>
+            </CardFooter>}
         </Card>
     )
 }

@@ -32,6 +32,7 @@ type Props = {
 }
 
 export default function Dashboard(props: Props) {
+    console.log(props);
     const { flash, dashboard } = props;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
