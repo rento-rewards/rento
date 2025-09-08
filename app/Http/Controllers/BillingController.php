@@ -8,20 +8,26 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Stripe\Stripe;
 
 class BillingController extends Controller
 {
     public function index(Request $request): Response
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-
         $user = $request->user();
-        $payment_method = $user->defaultPaymentMethod()?->card;
+        $props = [];
 
-        return Inertia::render('settings/billing', [
-            'payment_method' => PaymentMethodData::optional($payment_method?->toArray()),
-        ]);
+        $payment_method = $user->defaultPaymentMethod();
+        if ($payment_method) {
+            $props['payment_method'] = PaymentMethodData::from([
+                'id' => $user->defaultPaymentMethod()->id,
+                'brand' => $payment_method->card->brand,
+                'last4' => $payment_method->card->last4,
+                'exp_month' => $payment_method->card->exp_month,
+                'exp_year' => $payment_method->card->exp_year,
+            ]);
+        }
+
+        return Inertia::render('settings/billing', $props);
     }
 
     public function store(PaymentMethodFormData $data): RedirectResponse

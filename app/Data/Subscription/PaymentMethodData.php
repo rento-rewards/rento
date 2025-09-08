@@ -9,6 +9,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class PaymentMethodData extends Data
 {
     public function __construct(
+        public string $id,
         public string $brand,
         public string $last4,
         public int    $exp_month,

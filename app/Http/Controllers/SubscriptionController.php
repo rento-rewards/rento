@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\Subscription\PaymentMethodData;
 use App\Data\Subscription\SubscriptionData;
 use App\Data\Subscription\SubscriptionFormData;
 use App\Data\Subscription\SubscriptionUpdateData;
@@ -27,21 +28,35 @@ class SubscriptionController extends Controller
     public function index(Request $request): Response
     {
         $user = $request->user();
+        $payment_method = $user->defaultPaymentMethod();
+
+        $props = [];
+
+        if ($payment_method) {
+            $props['payment_method'] = PaymentMethodData::from([
+                'id' => $payment_method->id,
+                'brand' => $payment_method->card->brand,
+                'last4' => $payment_method->card->last4,
+                'exp_month' => $payment_method->card->exp_month,
+                'exp_year' => $payment_method->card->exp_year,
+            ]);
+        }
+
         $subscription = $user->subscription($this->subscription_id);
-        $price_id = $subscription?->stripe_price;
-        $payment_method = $user->defaultPaymentMethod()?->card;
-        $next_billing_date = $subscription?->asStripeSubscription()?->current_period_end;
+        if ($subscription) {
+            $price_id = $subscription->stripe_price;
+            $next_billing_date = $subscription->asStripeSubscription()->current_period_end;
+            $plan = SubscriptionData::optional([
+                'type' => SubscriptionType::fromId($price_id),
+                'payment_method' => $payment_method?->toArray(),
+                'next_billing_date' => $next_billing_date ? Carbon::createFromTimestamp($next_billing_date) : null,
+                'on_grace_period' => $subscription?->onGracePeriod() ?? false,
+            ]);
 
-        $plan = SubscriptionData::optional([
-            'type' => SubscriptionType::fromId($price_id),
-            'payment_method' => $payment_method?->toArray(),
-            'next_billing_date' => $next_billing_date ? Carbon::createFromTimestamp($next_billing_date) : null,
-            'on_grace_period' => $subscription?->onGracePeriod() ?? false,
-        ]);
+            $props['current_plan'] = $plan;
+        }
 
-        return Inertia::render('settings/subscription', [
-            'current_plan' => $plan->toArray(),
-        ]);
+        return Inertia::render('settings/subscription', $props);
     }
 
     public function subscribe(SubscriptionFormData $data): RedirectResponse

@@ -12,7 +12,6 @@ class SubscriptionData extends Data
 {
     public function __construct(
         public SubscriptionType $type,
-        public PaymentMethodData $payment_method,
         public Carbon $next_billing_date,
         public bool $on_grace_period,
     ) {

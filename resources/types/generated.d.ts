@@ -69,6 +69,7 @@ total: string;
 status: App.Enums.PaymentStatus;
 };
 export type PaymentMethodData = {
+id: string;
 brand: string;
 last4: string;
 exp_month: number;
@@ -76,7 +77,6 @@ exp_year: number;
 };
 export type SubscriptionData = {
 type: App.Enums.SubscriptionType;
-payment_method: App.Data.Subscription.PaymentMethodData;
 next_billing_date: string;
 on_grace_period: boolean;
 };
