@@ -3,6 +3,7 @@ import ReportTableHeader from '@/components/pages/reports/table/header';
 import { flexRender } from '@tanstack/react-table';
 import ReportTableData = App.Data.Reports.ReportTableData;
 import { Table as TableType } from "@tanstack/react-table"
+import { columns } from '@/components/pages/reports/table/columns';
 
 type Props = {
     table: TableType<ReportTableData>
@@ -15,6 +16,9 @@ export default function PlainReportTable({ table }: Props) {
                 <ReportTableHeader table={table} />
             </TableHeader>
             <TableBody>
+                {table.getRowModel().rows.length <= 0 && <TableCell colSpan={columns.length} className="h-24 text-center">
+                    No reports found.
+                </TableCell>}
                 {table.getRowModel().rows.map((row) => (
                     <TableRow
                         key={row.id}
