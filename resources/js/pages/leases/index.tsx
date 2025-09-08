@@ -10,12 +10,12 @@ import LeaseData = App.Data.Leases.LeaseData;
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Leases',
-        href: '/leases',
-    },
+        href: '/leases'
+    }
 ];
 
 type LeaseIndexProps = {
-    leases?: (LeaseData & { id: number})[],
+    leases?: (LeaseData & { id: number })[],
 }
 
 export default function LeaseIndex(props: LeaseIndexProps) {
@@ -32,8 +32,14 @@ export default function LeaseIndex(props: LeaseIndexProps) {
                     </Link>
                 </Button>
                 {/* Placeholder for lease list or content */}
-                {}
                 <div className="grid gap-4 @md:grid-cols-2 @lg:grid-cols-3">
+                    {!leases || leases.length === 0 && (
+                        <Button variant="outline" className="col-span-full p-8 border-dashed" asChild>
+                            <Link href={create()} prefetch>
+                                <Plus /> Add new lease
+                            </Link>
+                        </Button>
+                    )}
                     {leases?.map(lease => (
                         <LeaseCard lease={lease} key={lease.id} />
                     ))}
