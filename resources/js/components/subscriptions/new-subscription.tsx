@@ -1,10 +1,6 @@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { useForm } from '@inertiajs/react';
 import SubscriptionType = App.Enums.SubscriptionType;
-import CreditCardForm from '@/components/payments/credit-card-form';
-import { subscribe } from '@/routes/subscription';
-import { PaymentMethod } from '@stripe/stripe-js';
 import { SubscribeButton } from '@/components/subscriptions/subscribe-button';
 import { useState } from 'react';
 
