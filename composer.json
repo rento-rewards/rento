@@ -21,6 +21,7 @@
         "resend/resend-laravel": "^0.21.0",
         "spatie/laravel-data": "^4.17",
         "spatie/laravel-typescript-transformer": "^2.5",
+        "turso/libsql": "^0.2.5",
         "web-token/jwt-framework": "^4.0"
     },
     "require-dev": {

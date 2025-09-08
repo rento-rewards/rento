@@ -42,6 +42,12 @@ return [
             'synchronous' => null,
         ],
 
+        "libsql" => [
+            "driver" => "libsql",
+            "url" => env("TURSO_DATABASE_URL"),
+            "password" => env("TURSO_AUTH_TOKEN"),
+        ],
+
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
@@ -147,7 +153,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
 
