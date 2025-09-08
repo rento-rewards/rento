@@ -46,6 +46,11 @@ COPY --from=node-build /app/bootstrap/ssr ./bootstrap/ssr
 RUN chown -R nobody:nogroup storage bootstrap/cache \
  && chmod -R u+rwX,go+rX storage bootstrap/cache
 
+# Copy startup script
+COPY docker/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
 EXPOSE 8080
 
-CMD php artisan inertia:start-ssr & php-fpm8 -F
+# Start migrations, SSR, and PHP-FPM
+CMD ["/usr/local/bin/start.sh"]
