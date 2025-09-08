@@ -30,11 +30,13 @@ class LeaseController extends Controller
         ]);
     }
 
-    public function create(): Response
+    public function create(Request $request): Response
     {
+        $report_after_save = $request->boolean('report_after_save');
         $upload_option = LeaseData::rulesMetadata();
         return Inertia::render('leases/create', [
             'upload_option' => $upload_option,
+            'report_after_save' => $report_after_save,
         ]);
     }
 
@@ -50,6 +52,10 @@ class LeaseController extends Controller
             'document' => $document
         ];
         $lease = $user->leases()->create($entry);
+        $report_after_save = request()->boolean('report_after_save');
+        if ($report_after_save) {
+            return redirect()->route('reports.create', ['lease_id' => $lease->id]);
+        }
         return redirect()->route('leases.show', $lease)->with('success', 'Lease created successfully.');
     }
 
@@ -74,6 +80,10 @@ class LeaseController extends Controller
     public function update(LeaseData $data, Lease $lease): RedirectResponse
     {
         $lease->update($data->toArray());
+        $report_after_save = request()->boolean('report_after_save');
+        if ($report_after_save) {
+            return redirect()->route('reports.create', ['lease_id' => $lease->id]);
+        }
         return redirect()->route('leases.show', $lease)->with('success', 'Lease updated successfully.');
     }
 
