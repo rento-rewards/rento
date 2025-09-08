@@ -1,15 +1,15 @@
 import ReportLayout from '@/components/pages/reports/layout';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import ReportFormStepper from '@/components/pages/reports/form-stepper';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import InputError from '@/components/input-error';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { LoaderCircle } from 'lucide-react';
+import { LoaderCircle, Plus } from 'lucide-react';
 import { currencyFormatter, formatOrdinals } from '@/lib/formatters';
-import { store } from '@/routes/reports';
 import ReportController from '@/actions/App/Http/Controllers/ReportController';
+import { create } from '@/routes/leases';
 
 type Props = {
     leases: (App.Data.Leases.LeaseData & { id: string })[],
@@ -34,6 +34,13 @@ export default function ReportCreateStep1({ leases, lease_id }: Props) {
                                 className="flex flex-col"
                                 defaultValue={lease_id}
                             >
+                                {leases.length === 0 && (
+                                    <Button variant="outline" className="p-8 border-dashed" asChild>
+                                        <Link href={create()} prefetch>
+                                            <Plus /> Add new lease
+                                        </Link>
+                                    </Button>
+                                )}
                                 {leases.map((lease) => (
                                     <div
                                         key={lease.id}
@@ -63,9 +70,8 @@ export default function ReportCreateStep1({ leases, lease_id }: Props) {
                                     </div>
                                 ))}
                             </RadioGroup>
-
                             <div className="flex justify-end">
-                                <Button type="submit">
+                                <Button type="submit" disabled={processing || leases.length === 0}>
                                     {processing ? (
                                         <LoaderCircle className="animate-spin" />
                                     ) : (
