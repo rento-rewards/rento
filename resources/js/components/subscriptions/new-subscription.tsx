@@ -5,21 +5,20 @@ import SubscriptionType = App.Enums.SubscriptionType;
 import CreditCardForm from '@/components/payments/credit-card-form';
 import { subscribe } from '@/routes/subscription';
 import { PaymentMethod } from '@stripe/stripe-js';
+import { SubscribeButton } from '@/components/subscriptions/subscribe-button';
+import { useState } from 'react';
 
-export default function NewSubscription() {
-    const { data, setData, post } = useForm<App.Data.Subscription.SubscriptionFormData>({
-        type: "monthly",
-        payment_method_id: ""
-    });
+type Props = {
+    paymentMethod?: App.Data.Subscription.PaymentMethodData
+}
 
-    const handleNewSubscription = (paymentMethod: PaymentMethod) => {
-        setData('payment_method_id', paymentMethod.id);
-        post(subscribe.url())
-    }
+export default function NewSubscription(props: Props) {
+    const { paymentMethod } = props;
+    const [choice, setChoice] = useState<App.Enums.SubscriptionType>("monthly");
 
     return <>
-        <RadioGroup value={data.type}
-                    onValueChange={(value) => setData('type', value as SubscriptionType)}
+        <RadioGroup value={choice}
+                    onValueChange={(value) => setChoice(value as SubscriptionType)}
                     className="grid @md:grid-cols-2 gap-4">
             <div
                 className="border-input has-data-[state=checked]:border-primary/50 relative flex w-full items-start gap-2 rounded-md border p-4 shadow-xs outline-none">
@@ -59,6 +58,6 @@ export default function NewSubscription() {
                 </div>
             </div>
         </RadioGroup>
-        <CreditCardForm processPaymentMethod={handleNewSubscription} />
+        <SubscribeButton paymentMethod={paymentMethod} subscriptionType={choice} />
     </>;
 }

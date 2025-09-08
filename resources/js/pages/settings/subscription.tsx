@@ -4,7 +4,6 @@ import SettingsLayout from '@/layouts/settings/layout';
 import HeadingSmall from '@/components/heading-small';
 import { Head } from '@inertiajs/react';
 import NewSubscription from '@/components/subscriptions/new-subscription';
-import SubscriptionData = App.Data.Subscription.SubscriptionData;
 import CurrentPlan from '@/components/subscriptions/current-plan';
 import AlertMessage from '@/components/alert-message';
 
@@ -21,12 +20,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 type Props = {
     flash: FlashMessage,
-    current_plan?: SubscriptionData
+    current_plan?: App.Data.Subscription.SubscriptionData,
+    payment_method?: App.Data.Subscription.PaymentMethodData
 }
 
 export default function Subscription(props: Props) {
     console.log(props);
-    const { flash, current_plan } = props;
+    const { flash, current_plan, payment_method} = props;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -40,7 +40,7 @@ export default function Subscription(props: Props) {
                     {flash.error && <AlertMessage variant="error">
                         {flash.error}
                     </AlertMessage>}
-                    {current_plan ? <CurrentPlan currentPlan={current_plan} /> : <NewSubscription />}
+                    {current_plan ? <CurrentPlan currentPlan={current_plan} /> : <NewSubscription paymentMethod={payment_method} />}
                 </div>
             </SettingsLayout>
         </AppLayout>
