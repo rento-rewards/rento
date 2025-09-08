@@ -24,18 +24,18 @@ export type ReportCountData = {
 }
 
 const chartConfig = {
-    "created": {
-        label: "Processing",
-        color: "var(--chart-3)",
+    'created': {
+        label: 'Processing',
+        color: 'var(--chart-3)'
     },
-    "verified": {
-        label: "Verified",
-        color: "var(--chart-1)",
+    'verified': {
+        label: 'Verified',
+        color: 'var(--chart-1)'
     },
-    "reported": {
-        label: "Reported",
-        color: "var(--chart-2)",
-    },
+    'reported': {
+        label: 'Reported',
+        color: 'var(--chart-2)'
+    }
 } satisfies ChartConfig;
 
 type Props = ComponentProps<typeof Card> & {
@@ -43,15 +43,15 @@ type Props = ComponentProps<typeof Card> & {
 }
 
 export default function ReportCount(props: Props) {
-    const id = "report-count";
+    const id = 'report-count';
     const { reportCounts, className, ...rest } = props;
-    const [option, setOption] = useState("this_year");
+    const [option, setOption] = useState('this_year');
     const counts = reportCounts[option];
     const data = [
-        { status: "created", count: counts?.created || 0, fill: "var(--color-created)" },
-        { status: "verified", count: counts?.verified || 0, fill: "var(--color-verified)" },
-        { status: "reported", count: counts?.reported || 0, fill: "var(--color-reported)" }
-    ]
+        { status: 'created', count: counts?.created || 0, fill: 'var(--color-created)' },
+        { status: 'verified', count: counts?.verified || 0, fill: 'var(--color-verified)' },
+        { status: 'reported', count: counts?.reported || 0, fill: 'var(--color-reported)' }
+    ];
 
     const totalCount = data.reduce((acc, item) => acc + item.count, 0);
 
@@ -83,7 +83,7 @@ export default function ReportCount(props: Props) {
                 config={chartConfig}
                 className="mx-auto aspect-square w-full max-w-[300px]"
             >
-                <PieChart>
+                {totalCount > 0 ? <PieChart>
                     <ChartTooltip
                         cursor={false}
                         content={<ChartTooltipContent hideLabel />}
@@ -97,7 +97,7 @@ export default function ReportCount(props: Props) {
                     >
                         <Label
                             content={({ viewBox }) => {
-                                if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                                if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                                     return (
                                         <text
                                             x={viewBox.cx}
@@ -120,7 +120,7 @@ export default function ReportCount(props: Props) {
                                                 Reports
                                             </tspan>
                                         </text>
-                                    )
+                                    );
                                 }
                             }}
                         />
@@ -129,7 +129,11 @@ export default function ReportCount(props: Props) {
                         content={<ChartLegendContent nameKey="status" />}
                         className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center"
                     />
-                </PieChart>
+                </PieChart> : <div
+                    className="flex flex-col size-full flex-1 items-center justify-center text-sm text-muted-foreground">
+                    <div className="text-foreground text-4xl font-bold mb-2">0</div>
+                    <div className="text-sm text-muted-foreground">No reports yet</div>
+                </div>}
             </ChartContainer>
         </CardContent>
     </Card>;
