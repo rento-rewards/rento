@@ -16,13 +16,14 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 type Props = {
     upload_option: UploadOption;
+    report_after_save: boolean
 }
 
 export default function LeaseCreate(props: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create Lease" />
-            <LeaseForm uploadOption={props.upload_option} />
+            <LeaseForm uploadOption={props.upload_option} reportAfterSave={props.report_after_save} />
         </AppLayout>
     );
 }

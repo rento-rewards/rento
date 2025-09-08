@@ -36,7 +36,11 @@ export default function ReportCreateStep1({ leases, lease_id }: Props) {
                             >
                                 {leases.length === 0 && (
                                     <Button variant="outline" className="p-8 border-dashed" asChild>
-                                        <Link href={create()} prefetch>
+                                        <Link href={create({
+                                            query: {
+                                                report_after_save: "true"
+                                            }
+                                        })} prefetch>
                                             <Plus /> Add new lease
                                         </Link>
                                     </Button>
