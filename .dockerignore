@@ -1,0 +1,30 @@
+# Node modules (reinstall inside Docker)
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Laravel caches and local storage
+vendor
+storage/*.key
+storage/debugbar
+storage/logs
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git files
+.git
+.gitignore
+
+# Environment
+.env
+.env.local
+.env.*.backup
+
+# Build artifacts that will be rebuilt in Docker
+public/build/*
+bootstrap/ssr/*
