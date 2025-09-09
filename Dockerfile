@@ -2,10 +2,7 @@ FROM php:8.2-fpm-alpine AS php-build
 
 # Install system dependencies
 RUN apk add --no-cache bash git curl zip unzip oniguruma-dev libzip-dev sqlite sqlite-dev nodejs npm \
-  && docker-php-ext-install pdo pdo_mysql mbstring zip bcmath ffi
-
-# Enable PHP extensions
-RUN echo "ffi.enable=true" > /usr/local/etc/php/conf.d/ffi.ini
+  && docker-php-ext-install pdo pdo_mysql mbstring zip bcmath
 
 WORKDIR /var/www/html
 
