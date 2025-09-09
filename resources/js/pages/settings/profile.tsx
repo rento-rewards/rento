@@ -27,7 +27,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 type Props = {
     mustVerifyEmail: boolean;
-    idVerified: boolean;
+    idVerified?: boolean;
     status?: string;
 }
 
@@ -140,7 +140,7 @@ export default function Profile(props: Props) {
                     </Form>
                 </div>
 
-                <IdentityVerification verified={idVerified} />
+                {idVerified !== undefined && <IdentityVerification verified={idVerified} />}
                 <DeleteUser />
             </SettingsLayout>
         </AppLayout>

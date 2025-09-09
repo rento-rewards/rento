@@ -22,7 +22,7 @@ type Props = {
     flash: FlashMessage,
     dashboard: {
         recent_reports: App.Data.Reports.ReportTableData[],
-        has_id_verification: boolean,
+        has_id_verification?: boolean,
         report_counts: {
             all_time: ReportCountData,
             this_year: ReportCountData
@@ -54,7 +54,7 @@ export default function Dashboard(props: Props) {
                         </AlertMessage>
                     )
                 }
-                {!dashboard.has_id_verification && (
+                {dashboard.has_id_verification === false && (
                     <IdVerificationBanner />
                 )}
                 <div className="grid md:grid-cols-2 gap-4">

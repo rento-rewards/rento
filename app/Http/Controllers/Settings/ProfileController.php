@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Pennant\Feature;
 
 class ProfileController extends Controller
 {
@@ -18,11 +19,14 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        return Inertia::render('settings/profile', [
+        $props = [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
-            'idVerified' => $request->user()->interac()->exists(),
-        ]);
+        ];
+        if (Feature::active('id-verification')) {
+            $props['idVerified'] = $request->user()->interac()->exists();
+        }
+        return Inertia::render('settings/profile', $props);
     }
 
     /**
