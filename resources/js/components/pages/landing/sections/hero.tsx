@@ -29,7 +29,7 @@ const transitionVariants = {
     item?: Variants
 };
 
-const MotionLink = motion.create(Link);
+const MotionButton = motion.create(Button);
 
 export default function HeroSection() {
     return <section className="bg-linear-to-b to-muted from-background overflow-x-hidden">
@@ -54,20 +54,24 @@ export default function HeroSection() {
                             monthly expense to build your credit score!
                         </TextEffect>
 
-                        <AnimatedGroup variants={{
-                            container: {
-                                visible: {
-                                    transition: {
-                                        delayChildren: stagger(0.05, { startDelay: 0.75 })
-                                    },
+                        <div className="flex items-center gap-3">
+                            <MotionButton
+                                initial={{
+                                    opacity: 0,
+                                    filter: 'blur(12px)',
+                                    y: 12
+                                }}
+                                animate={{
                                     opacity: 1,
                                     filter: 'blur(0px)',
-                                    y: 0
-                                }
-                            },
-                            ...transitionVariants
-                        }} className="flex items-center gap-3">
-                            <Button
+                                    y: 0,
+                                    transition: {
+                                        type: 'spring',
+                                        bounce: 0.3,
+                                        duration: 1.5,
+                                        delay: 1
+                                    }
+                                }}
                                 asChild
                                 size="lg"
                                 className="pr-4.5">
@@ -75,8 +79,8 @@ export default function HeroSection() {
                                     <span className="text-nowrap">Get Started</span>
                                     <ChevronRight className="opacity-50" />
                                 </Link>
-                            </Button>
-                        </AnimatedGroup>
+                            </MotionButton>
+                        </div>
                     </div>
 
                     <div className="mt-10">
@@ -113,19 +117,22 @@ export default function HeroSection() {
                 </div>
             </div>
 
-            <AnimatedGroup
-                variants={{
-                    container: {
-                        visible: {
-                            transition: {
-                                delayChildren: stagger(0.1, { startDelay: 1.75 })
-                            },
-                            opacity: 1,
-                            filter: 'blur(0px)',
-                            y: 0
-                        }
-                    },
-                    ...transitionVariants
+            <motion.div
+                initial={{
+                    opacity: 0,
+                    filter: 'blur(12px)',
+                    y: 12
+                }}
+                animate={{
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    y: 0,
+                    transition: {
+                        type: 'spring',
+                        bounce: 0.3,
+                        duration: 1.5,
+                        delay: 1
+                    }
                 }}
                 className="perspective-near mt-24 translate-x-12 md:absolute md:-right-6 md:bottom-16 md:left-1/2 md:top-40 md:mt-0 md:translate-x-0">
                 <div
@@ -155,7 +162,7 @@ export default function HeroSection() {
                         </picture>
                     </div>
                 </div>
-            </AnimatedGroup>
+            </motion.div>
         </div>
     </section>;
 }

@@ -1,6 +1,6 @@
 import LandingLayout from '@/layouts/landing-layout';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
 import { register } from '@/routes';
