@@ -1,12 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import { Link } from '@inertiajs/react';
-import { prefersDark, useAppearance } from '@/hooks/use-appearance';
 import { register } from '@/routes';
 import { TextEffect } from '@/components/ui/motion/text-effect';
 import { AnimatedGroup } from '@/components/ui/motion/animated-group';
 import { stagger } from 'motion';
-import { Variants } from 'motion/react';
+import { motion, Variants } from 'motion/react';
 
 const transitionVariants = {
     item: {
@@ -29,6 +28,8 @@ const transitionVariants = {
 } satisfies {
     item?: Variants
 };
+
+const MotionLink = motion(Link);
 
 export default function HeroSection() {
     return <section className="bg-linear-to-b to-muted from-background overflow-x-hidden">
