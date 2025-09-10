@@ -42,6 +42,7 @@ export default function FooterSection() {
                     <div className="md:col-span-2 space-y-8">
                         <Link
                             href="/"
+                            prefetch
                             aria-label="go home"
                             className="block size-fit">
                             <LandingLogo height={20} />
