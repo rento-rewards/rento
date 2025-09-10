@@ -31,7 +31,7 @@ export default function Component() {
             className={`sticky top-0 z-50 w-full backdrop-blur-lg transition-all duration-300 ${isScrolled ? 'bg-background/80 shadow-sm' : 'bg-transparent'}`}
         >
             <div className="flex h-16 items-center justify-between mx-auto max-w-screen-xl px-8">
-                <Link className="inline-flex items-center gap-2 font-bold" href="/">
+                <Link className="inline-flex items-center gap-2 font-bold" href="/" prefetch>
                     <LandingLogo color="text-primary" height={20} />
                 </Link>
                 <nav className="hidden md:flex gap-8">
@@ -39,6 +39,7 @@ export default function Component() {
                         <Link
                             key={link.href.url}
                             href={link.href}
+                            prefetch
                             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                         >
                             {link.label}
@@ -49,6 +50,7 @@ export default function Component() {
                     {auth.user ? (
                         <Button asChild>
                             <Link
+                                prefetch
                                 href={dashboard()}
                             >
                                 Dashboard <ChevronRight />
@@ -57,10 +59,10 @@ export default function Component() {
                     ) : (
                         <>
                             <Button asChild variant="ghost">
-                                <Link href={login()}>Log in</Link>
+                                <Link href={login()} prefetch>Log in</Link>
                             </Button>
                             <Button asChild>
-                                <Link href={register()}>Get started</Link>
+                                <Link href={register()} prefetch>Get started</Link>
                             </Button>
                         </>
                     )}
@@ -83,6 +85,7 @@ export default function Component() {
                     <div className="max-w-screen-xl mx-auto px-8 py-4 flex flex-col gap-4">
                         {navigationLinks.map((link) => (
                             <Link
+                                prefetch
                                 key={link.href.url}
                                 href={link.href}
                                 className="py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -96,6 +99,7 @@ export default function Component() {
                         {auth.user ? (
                             <Button asChild className="m-4 w-full max-w-screen-xl mx-auto x-8">
                                 <Link
+                                    prefetch
                                     href={dashboard()}
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
@@ -104,10 +108,10 @@ export default function Component() {
                             </Button>
                         ) : (<>
                                 <Button asChild variant="outline" className="flex-1">
-                                    <Link href={login()} onClick={() => setMobileMenuOpen(false)}>Log in</Link>
+                                    <Link prefetch href={login()} onClick={() => setMobileMenuOpen(false)}>Log in</Link>
                                 </Button>
                                 <Button asChild className="flex-1">
-                                    <Link href={register()} onClick={() => setMobileMenuOpen(false)}>Get
+                                    <Link prefetch href={register()} onClick={() => setMobileMenuOpen(false)}>Get
                                         started</Link>
                                 </Button>
                             </>
