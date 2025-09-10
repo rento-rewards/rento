@@ -9,7 +9,7 @@ import { TextEffect } from '@/components/ui/motion/text-effect';
 import { motion } from 'motion/react';
 import { SlidingNumber } from '@/components/ui/motion/sliding-number';
 
-const MotionCard = motion(Card);
+const MotionCard = motion.create(Card);
 export default function Pricing() {
     const [choice, setChoice] = useState<App.Enums.SubscriptionType>('monthly');
     const price = choice === 'monthly' ? 5 : 3;

@@ -29,7 +29,7 @@ const transitionVariants = {
     item?: Variants
 };
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 export default function HeroSection() {
     return <section className="bg-linear-to-b to-muted from-background overflow-x-hidden">

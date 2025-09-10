@@ -6,7 +6,7 @@ import { ChevronRight } from 'lucide-react';
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 export default function CallToActionSection() {
     const ref = useRef(null);
