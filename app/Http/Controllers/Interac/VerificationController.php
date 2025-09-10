@@ -11,7 +11,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 class VerificationController extends Controller
 {
-    public function start(Request $request)
+    public function start()
     {
         return Socialite::driver('interac')->redirect();
     }
@@ -23,13 +23,13 @@ class VerificationController extends Controller
             return redirect()->route('dashboard')->with(['error' => 'Interac verification failed. Please try again.']);
         }
         try {
-            $user = Socialite::driver('interac')->user();
+            $interac = Socialite::driver('interac')->user();
 
             $request->user()->interac()->create([
-                'sub' => $user->getId(),
-                'payload' => json_encode($user->user),
-                'document_type' => $user->user['doc_type'],
-                'expiry_date' => $user->user['expiry_date'],
+                'sub' => $interac->getId(),
+                'payload' => json_encode($interac->user),
+                'document_type' => $interac->user['doc_type'],
+                'expiry_date' => $interac->user['expiry_date'],
             ]);
 
             return redirect()->route('dashboard')->with('success', 'Interac verification successful.');
