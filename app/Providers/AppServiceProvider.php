@@ -2,14 +2,19 @@
 
 namespace App\Providers;
 
+use App\Gateways\InertiaHttpGateway;
 use App\Socialite\InteracProvider;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Ssr\HttpGateway;
 use Stripe\StripeClient;
 use Laravel\Socialite\Contracts\Factory;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public $bindings = [
+        HttpGateway::class => InertiaHttpGateway::class,
+    ];
     /**
      * Register any application services.
      */
