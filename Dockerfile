@@ -56,8 +56,12 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 # 11. Production optimizations (skip config:cache to allow runtime env vars)
 RUN php artisan route:cache && php artisan view:cache
 
-# 12. Expose port (Render will use PORT env variable)
+# 12. Set environment variables for HTTPS behind reverse proxy
+ENV FORCE_HTTPS=true
+ENV APP_URL=https://rento.vhng.dev
+
+# 13. Expose port (Render will use PORT env variable)
 EXPOSE 10000
 
-# 13. Use entrypoint script
+# 14. Use entrypoint script
 CMD ["/usr/local/bin/entrypoint.sh"]
