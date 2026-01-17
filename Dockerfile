@@ -38,10 +38,11 @@ FROM base AS production
 
 USER root
 
-# Install Node.js for SSR server
-RUN apk add --no-cache nodejs npm
+# Install Node.js for SSR server and curl for healthcheck
+RUN apk add --no-cache nodejs npm curl
 
 ENV PHP_OPCACHE_ENABLE=1
+ENV PHP_FPM_LISTEN=127.0.0.1:9000
 
 EXPOSE 8080
 
@@ -96,5 +97,9 @@ RUN chmod +x /etc/s6-overlay/s6-rc.d/inertia-ssr/run
 # Add service to user bundle (must contain service name, not empty)
 RUN mkdir -p /etc/s6-overlay/s6-rc.d/user/contents.d
 RUN echo "inertia-ssr" > /etc/s6-overlay/s6-rc.d/user/contents.d/inertia-ssr
+
+# Add healthcheck (with start period to allow services to initialize)
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+    CMD curl -f http://127.0.0.1:8080/ || exit 1
 
 USER www-data
