@@ -85,18 +85,15 @@ RUN mkdir -p /etc/s6-overlay/s6-rc.d/inertia-ssr
 # Set service type as longrun
 RUN echo "longrun" > /etc/s6-overlay/s6-rc.d/inertia-ssr/type
 
-# Create dependencies to ensure SSR starts after PHP-FPM and Nginx
-RUN mkdir -p /etc/s6-overlay/s6-rc.d/inertia-ssr/dependencies.d && \
-    touch /etc/s6-overlay/s6-rc.d/inertia-ssr/dependencies.d/php-fpm && \
-    touch /etc/s6-overlay/s6-rc.d/inertia-ssr/dependencies.d/nginx
+# Create dependencies file to ensure SSR starts after PHP-FPM and Nginx
+RUN echo -e "php-fpm\nnginx" > /etc/s6-overlay/s6-rc.d/inertia-ssr/dependencies
 
 # Create run script for the SSR service
 RUN echo -e "#!/usr/bin/with-contenv sh\necho \"Starting Inertia SSR server...\"\nexec s6-setuidgid www-data php /var/www/html/artisan inertia:start-ssr" > /etc/s6-overlay/s6-rc.d/inertia-ssr/run
 RUN chmod +x /etc/s6-overlay/s6-rc.d/inertia-ssr/run
 
-# Add service to user bundle (must contain service name, not empty)
-RUN mkdir -p /etc/s6-overlay/s6-rc.d/user/contents.d
-RUN echo "inertia-ssr" > /etc/s6-overlay/s6-rc.d/user/contents.d/inertia-ssr
+# Add service to user bundle (empty file to register service)
+RUN touch /etc/s6-overlay/s6-rc.d/user/contents.d/inertia-ssr
 
 # Add healthcheck (with start period to allow services to initialize)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
