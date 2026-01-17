@@ -31,10 +31,15 @@ RUN composer dump-autoload
 # Install frontend deps (after composer install)
 RUN pnpm i --frozen-lockfile
 
-# Build frontend (PHP is now available for wayfinder)
-RUN pnpm build
+# Build frontend with SSR (PHP is now available for wayfinder)
+RUN pnpm build:ssr
 
 FROM base AS production
+
+USER root
+
+# Install Node.js for SSR server
+RUN apk add --no-cache nodejs npm
 
 ENV PHP_OPCACHE_ENABLE=1
 
@@ -47,9 +52,27 @@ RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction
 
 COPY --chown=www-data:www-data . /var/www/html
 
-# Copy only the built assets from node stage
+# Copy built assets (both client and SSR) from node stage
 COPY --from=node-builder /var/www/html/public/build /var/www/html/public/build
+COPY --from=node-builder /var/www/html/bootstrap/ssr /var/www/html/bootstrap/ssr
+
+# Copy node_modules for SSR runtime (production dependencies only)
+COPY --from=node-builder /var/www/html/node_modules /var/www/html/node_modules
 
 # Now run scripts and autoloader generation
 RUN composer dump-autoload --optimize && \
     composer run-script post-autoload-dump
+
+# Switch to root for entrypoint setup
+USER root
+
+# Copy SSR entrypoint script
+COPY docker-entrypoint-ssr.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint-ssr.sh
+
+# Expose port for SSR server (default Inertia SSR port is 13714)
+EXPOSE 13714
+
+# Use custom entrypoint that starts both PHP-FPM/Nginx and SSR server
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint-ssr.sh"]
+CMD ["nginx", "-g", "daemon off;"]
