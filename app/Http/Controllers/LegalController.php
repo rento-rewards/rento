@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\NotionService;
-use \Notion;
 use Inertia\Inertia;
 use Inertia\Response;
 
