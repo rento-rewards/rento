@@ -21,27 +21,19 @@ RUN apt-get update && \
 # Enable corepack for pnpm
 RUN corepack enable
 
-# Copy composer files and install PHP dependencies (needed for Wayfinder plugin)
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --prefer-dist --optimize-autoloader
+# Copy ALL application files first (Composer needs the full context)
+COPY . .
 
-# Copy Laravel files needed for route generation
-COPY artisan ./
-COPY bootstrap ./bootstrap
-COPY config ./config
-COPY routes ./routes
-COPY app ./app
+# Install PHP dependencies (needed for Wayfinder plugin)
+RUN composer install \
+    --no-dev \
+    --no-scripts \
+    --no-interaction \
+    --prefer-dist \
+    --optimize-autoloader
 
-# Copy package files and install frontend dependencies
-COPY package.json pnpm-lock.yaml* ./
+# Install frontend dependencies
 RUN pnpm install --frozen-lockfile
-
-# Copy source files needed for frontend build
-COPY resources ./resources
-COPY public ./public
-COPY vite.config.ts tsconfig.json ./
-COPY components.json ./
-COPY eslint.config.js .prettierrc .prettierignore ./
 
 # Build frontend assets (Wayfinder plugin will run php artisan wayfinder:generate)
 RUN pnpm build
