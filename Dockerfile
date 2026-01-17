@@ -37,23 +37,27 @@ WORKDIR /var/www/html
 # 5. Copy application files
 COPY . .
 
-# 6. Install PHP dependencies (ignore platform requirements for cross-platform compatibility)
+# 6. Copy and make entrypoint script executable
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# 7. Install PHP dependencies (ignore platform requirements for cross-platform compatibility)
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# 7. Install Node dependencies and build assets
+# 8. Install Node dependencies and build assets
 RUN pnpm install --frozen-lockfile && pnpm run build
 
-# 8. Clean up to reduce image size
+# 9. Clean up to reduce image size
 RUN rm -rf node_modules /root/.npm /root/.local/share/pnpm
 
-# 9. Set proper permissions
+# 10. Set proper permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# 10. Production optimizations (skip config:cache to allow runtime env vars)
+# 11. Production optimizations (skip config:cache to allow runtime env vars)
 RUN php artisan route:cache && php artisan view:cache
 
-# 11. Expose port (Render will use PORT env variable)
+# 12. Expose port (Render will use PORT env variable)
 EXPOSE 10000
 
-# 12. Start PHP built-in server (run migrations first)
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+# 13. Use entrypoint script
+CMD ["/usr/local/bin/entrypoint.sh"]
