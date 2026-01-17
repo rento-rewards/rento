@@ -1,6 +1,7 @@
 # Stage 1: Build frontend assets with PHP + Node.js
 # Using serversideup/php CLI variant and installing Node.js
-FROM serversideup/php:8.3-cli AS frontend-builder
+# Using PHP 8.4 to match composer.lock requirements (Symfony 8 needs PHP 8.4+)
+FROM serversideup/php:8.4-cli AS frontend-builder
 
 # Switch to root to install Node.js
 USER root
@@ -17,6 +18,9 @@ RUN apt-get update && \
     apt-get install -y nodejs && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Install bcmath extension (required by moneyphp/money)
+RUN install-php-extensions bcmath
 
 # Enable corepack for pnpm
 RUN corepack enable
@@ -45,16 +49,18 @@ RUN pnpm build
 
 # Stage 2: Production-ready PHP image
 # Using serversideup/php - excellent for Laravel: https://serversideup.net/open-source/docker-php/
-FROM serversideup/php:8.3-fpm-nginx
+# Using PHP 8.4 to match composer.lock requirements
+FROM serversideup/php:8.4-fpm-nginx
 
 # Switch to root to install additional packages
 USER root
 
-# Install PostgreSQL client for database operations
+# Install PostgreSQL client for database operations and bcmath extension
 RUN apt-get update && apt-get install -y \
     postgresql-client \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && install-php-extensions bcmath
 
 # Set working directory
 WORKDIR /var/www/html
