@@ -80,9 +80,10 @@ RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cac
     chown -R www-data:www-data storage bootstrap/cache && \
     chmod -R 775 storage bootstrap/cache
 
-# Laravel optimization for production (cache configs, routes, views, events)
+# Laravel optimization for production (cache configs, views, events)
+# Note: route:cache is removed because it caches routes at build time
+# which can cause 500 errors when runtime environment variables differ
 RUN php artisan config:cache && \
-    php artisan route:cache && \
     php artisan view:cache && \
     php artisan event:cache
 
@@ -187,10 +188,5 @@ RUN chmod +x /etc/s6-overlay/s6-rc.d/inertia-ssr/run
 
 # Add service to user bundle (empty file to register service)
 RUN touch /etc/s6-overlay/s6-rc.d/user/contents.d/inertia-ssr
-
-# Add healthcheck
-# Render.com will use PORT env variable at runtime
-HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
-    CMD curl -f http://127.0.0.1:${PORT}/ || exit 1
 
 USER www-data
