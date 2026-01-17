@@ -55,5 +55,5 @@ RUN php artisan route:cache && php artisan view:cache
 # 11. Expose port (Render will use PORT env variable)
 EXPOSE 10000
 
-# 12. Start PHP built-in server
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+# 12. Start PHP built-in server (run migrations first)
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
