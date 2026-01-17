@@ -43,7 +43,11 @@ RUN apk add --no-cache nodejs npm
 
 ENV PHP_OPCACHE_ENABLE=1
 
-USER www-data
+EXPOSE 8080
+
+WORKDIR /var/www/html
+
+USER root
 
 COPY --chown=www-data:www-data composer.json composer.lock /var/www/html/
 
@@ -63,16 +67,34 @@ COPY --from=node-builder /var/www/html/node_modules /var/www/html/node_modules
 RUN composer dump-autoload --optimize && \
     composer run-script post-autoload-dump
 
-# Switch to root for entrypoint setup
-USER root
+# Create Laravel directories and set permissions
+RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache && \
+    chown -R www-data:www-data storage bootstrap/cache && \
+    chmod -R 775 storage bootstrap/cache
 
-# Copy SSR entrypoint script
-COPY docker-entrypoint-ssr.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint-ssr.sh
+# Laravel optimization for production (cache configs, routes, views, events)
+RUN php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache && \
+    php artisan event:cache
 
-# Expose port for SSR server (default Inertia SSR port is 13714)
-EXPOSE 13714
+# Configure s6-overlay service for Inertia SSR
+RUN mkdir -p /etc/s6-overlay/s6-rc.d/inertia-ssr
 
-# Use custom entrypoint that starts both PHP-FPM/Nginx and SSR server
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint-ssr.sh"]
-CMD ["nginx", "-g", "daemon off;"]
+# Set service type as longrun
+RUN echo "longrun" > /etc/s6-overlay/s6-rc.d/inertia-ssr/type
+
+# Create dependencies to ensure SSR starts after PHP-FPM and Nginx
+RUN mkdir -p /etc/s6-overlay/s6-rc.d/inertia-ssr/dependencies.d && \
+    touch /etc/s6-overlay/s6-rc.d/inertia-ssr/dependencies.d/php-fpm && \
+    touch /etc/s6-overlay/s6-rc.d/inertia-ssr/dependencies.d/nginx
+
+# Create run script for the SSR service
+RUN echo -e "#!/usr/bin/with-contenv sh\necho \"Starting Inertia SSR server...\"\nexec s6-setuidgid www-data php /var/www/html/artisan inertia:start-ssr" > /etc/s6-overlay/s6-rc.d/inertia-ssr/run
+RUN chmod +x /etc/s6-overlay/s6-rc.d/inertia-ssr/run
+
+# Add service to user bundle (must contain service name, not empty)
+RUN mkdir -p /etc/s6-overlay/s6-rc.d/user/contents.d
+RUN echo "inertia-ssr" > /etc/s6-overlay/s6-rc.d/user/contents.d/inertia-ssr
+
+USER www-data
