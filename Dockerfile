@@ -2,27 +2,36 @@ FROM serversideup/php:8.4.11-fpm-nginx-alpine3.21 AS base
 
 USER root
 
-RUN install-php-extensions intl
+RUN install-php-extensions intl bcmath
 USER www-data
 
-FROM node:22.19.0-alpine3.21 AS node-builder
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+FROM base AS node-builder
 
-WORKDIR /app
+USER root
 
-# Copy package files first for caching
-COPY package.json pnpm-lock.yaml* ./
+# Install Node.js and pnpm in the PHP image
+RUN apk add --no-cache nodejs npm
+RUN npm install -g pnpm
 
-# Install deps
+USER www-data
+
+WORKDIR /var/www/html
+
+# Copy composer files and install dependencies (needed for wayfinder)
+COPY --chown=www-data:www-data composer.json composer.lock ./
+RUN composer install --no-scripts --no-interaction
+
+# Copy application code (needed for artisan commands)
+# This includes package.json and pnpm-lock.yaml
+COPY --chown=www-data:www-data . .
+
+# Generate autoloader (required for artisan commands)
+RUN composer dump-autoload
+
+# Install frontend deps (after composer install)
 RUN pnpm i --frozen-lockfile
 
-# Copy the rest of the frontend
-COPY resources/ resources/
-COPY vite.config.ts ./
-
-# Build frontend
+# Build frontend (PHP is now available for wayfinder)
 RUN pnpm build
 
 FROM base AS production
@@ -39,7 +48,7 @@ RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction
 COPY --chown=www-data:www-data . /var/www/html
 
 # Copy only the built assets from node stage
-COPY --from=node-builder /app/public/build /var/www/html/public/build
+COPY --from=node-builder /var/www/html/public/build /var/www/html/public/build
 
 # Now run scripts and autoloader generation
 RUN composer dump-autoload --optimize && \
