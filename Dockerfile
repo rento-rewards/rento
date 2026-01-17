@@ -24,24 +24,18 @@ RUN corepack enable
 # Copy ALL application files first (Composer needs the full context)
 COPY . .
 
-# Create a dummy .env file (needed by Laravel during composer install)
-RUN echo "APP_NAME=Laravel" > .env && \
-    echo "APP_ENV=production" >> .env && \
-    echo "APP_KEY=base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" >> .env && \
-    echo "APP_DEBUG=false" >> .env && \
-    echo "APP_URL=http://localhost" >> .env
+# Create a minimal .env file (needed by Laravel during composer install)
+RUN echo "APP_KEY=base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" > .env
 
 # Install PHP dependencies (needed for Wayfinder plugin)
-# Note: Using --no-autoloader and --no-scripts to avoid running Laravel boot
+# Using --no-plugins and --no-scripts to avoid any plugin/script issues during build
 RUN composer install \
     --no-dev \
-    --no-autoloader \
+    --no-plugins \
     --no-scripts \
     --no-interaction \
-    --prefer-dist || exit 1
-
-# Dump the autoloader after install
-RUN composer dump-autoload --optimize --no-dev
+    --prefer-dist \
+    --optimize-autoloader || (echo "Composer install failed" && exit 1)
 
 # Install frontend dependencies
 RUN pnpm install --frozen-lockfile
