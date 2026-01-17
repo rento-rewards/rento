@@ -25,7 +25,6 @@ RUN rm -rf node_modules /root/.npm /root/.local/share/pnpm
 # 6. Production Optimization
 RUN php artisan config:cache && php artisan route:cache
 
-ENV SERVER_NAME=:80
 ENV APP_RUNTIME=Laravel\Octane\FrankenPHP\Runtime
 
-CMD ["frankenphp", "php-server", "--listen", "0.0.0.0:${PORT:-10000}", "--root", "public/"]
+CMD ["php", "artisan", "octane:frankenphp", "--host=0.0.0.0", "--port=${PORT:-10000}"]
