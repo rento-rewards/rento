@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-echo "Starting application..."
+echo "Running Laravel setup..."
 
 # Run migrations
 php artisan migrate --force --no-interaction
@@ -11,5 +11,4 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Start supervisor
-exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+echo "Laravel setup complete!"

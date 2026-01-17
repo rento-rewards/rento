@@ -29,7 +29,7 @@ Supervisor configuration for managing multiple processes in a single container.
 
 Both processes output logs to stdout/stderr for Docker log collection.
 
-### start.sh
+### entrypoint.sh
 
 Container startup script that runs before the main application starts.
 
