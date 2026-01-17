@@ -1,31 +1,7 @@
-# Multi-stage build for optimized production image
+# Production-ready Docker image for Laravel + React
+FROM php:8.2-fpm-alpine
 
-# Stage 1: Build frontend assets
-FROM node:22-alpine AS frontend-builder
-
-WORKDIR /app
-
-# Copy package files
-COPY package.json package-lock.json pnpm-lock.yaml* ./
-
-# Enable corepack and install dependencies
-RUN corepack enable && \
-    pnpm install --frozen-lockfile
-
-# Copy source files needed for build
-COPY resources ./resources
-COPY public ./public
-COPY vite.config.ts tsconfig.json ./
-COPY components.json ./
-COPY eslint.config.js .prettierrc .prettierignore ./
-
-# Build frontend assets
-RUN pnpm build
-
-# Stage 2: PHP application
-FROM php:8.2-fpm-alpine AS production
-
-# Install system dependencies
+# Install system dependencies including Node.js for build
 RUN apk add --no-cache \
     git \
     curl \
@@ -66,20 +42,35 @@ RUN echo "opcache.enable=1" >> $PHP_INI_DIR/conf.d/opcache.ini && \
     echo "opcache.revalidate_freq=0" >> $PHP_INI_DIR/conf.d/opcache.ini && \
     echo "opcache.validate_timestamps=0" >> $PHP_INI_DIR/conf.d/opcache.ini
 
+# Enable corepack for pnpm
+RUN corepack enable
+
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files
-COPY composer.json composer.lock ./
+# Copy package files and install frontend dependencies
+COPY package.json package-lock.json pnpm-lock.yaml* ./
+RUN pnpm install --frozen-lockfile
 
-# Install PHP dependencies (without dev dependencies)
+# Copy source files needed for frontend build
+COPY resources ./resources
+COPY public ./public
+COPY vite.config.ts tsconfig.json ./
+COPY components.json ./
+COPY eslint.config.js .prettierrc .prettierignore ./
+
+# Build frontend assets
+RUN pnpm build
+
+# Remove node_modules to save space (not needed at runtime)
+RUN rm -rf node_modules
+
+# Copy composer files and install PHP dependencies
+COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --optimize-autoloader
 
-# Copy application files
+# Copy remaining application files
 COPY . .
-
-# Copy built frontend assets from builder stage
-COPY --from=frontend-builder /app/public/build ./public/build
 
 # Generate optimized autoloader
 RUN composer dump-autoload --optimize --no-dev
