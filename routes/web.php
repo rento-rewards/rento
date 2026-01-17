@@ -6,6 +6,10 @@ use App\Http\Controllers\LegalController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// Health check endpoint for Docker and Render
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok']);
+});
 
 Route::get('/', function () {
     return Inertia::render('home', []);
