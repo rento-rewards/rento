@@ -1,30 +1,67 @@
-FROM dunglas/frankenphp:latest
+FROM php:8.3-apache
 
-# 1. Install Node.js & pnpm (Debian-based)
-RUN apt-get update && apt-get install -y nodejs npm \
+# 1. Install system dependencies and Node.js
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libxml2-dev \
+    libpq-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    nodejs \
+    npm \
     && npm install -g pnpm \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. Install PHP extensions for Laravel
-RUN install-php-extensions pdo_pgsql gd intl zip opcache pcntl bcmath
+# 2. Configure and install PHP extensions one by one
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install pdo_pgsql
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install gd
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install opcache
+RUN docker-php-ext-install pcntl
+RUN docker-php-ext-install bcmath
 
-# 3. Install Composer
+# 3. Enable Apache mod_rewrite
+RUN a2enmod rewrite
+
+# 4. Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /app
+# 5. Set working directory
+WORKDIR /var/www/html
+
+# 6. Copy application files
 COPY . .
 
-# 4. Build Everything
-# pnpm run build can now find 'php artisan' because it's in the same image
-RUN composer install --no-dev --optimize-autoloader
+# 7. Install PHP dependencies (ignore platform requirements for cross-platform compatibility)
+RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
+
+# 8. Install Node dependencies and build assets
 RUN pnpm install --frozen-lockfile && pnpm run build
 
-# 5. Clean up to reduce image size (Optional but recommended)
+# 9. Clean up to reduce image size
 RUN rm -rf node_modules /root/.npm /root/.local/share/pnpm
 
-# 6. Production Optimization
-RUN php artisan config:cache && php artisan route:cache
+# 10. Set proper permissions
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-ENV APP_RUNTIME=Laravel\Octane\FrankenPHP\Runtime
+# 11. Configure Apache DocumentRoot
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-CMD ["php", "artisan", "octane:frankenphp", "--host=0.0.0.0", "--port=${PORT:-10000}"]
+# 12. Production optimizations
+RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
+
+# 13. Expose port
+EXPOSE 80
+
+# 14. Start Apache
+CMD ["apache2-foreground"]
