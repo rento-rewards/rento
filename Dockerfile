@@ -41,10 +41,17 @@ USER root
 # Install Node.js for SSR server and curl for healthcheck
 RUN apk add --no-cache nodejs npm curl
 
+# Environment variables for PHP
 ENV PHP_OPCACHE_ENABLE=1
+ENV PHP_FPM_POOL_NAME=www
 ENV PHP_FPM_LISTEN=127.0.0.1:9000
+ENV SSL_MODE=off
+ENV LOG_OUTPUT_LEVEL=info
 
-EXPOSE 8080
+# Default PORT for local development (Render.com will override this)
+ENV PORT=10000
+
+EXPOSE $PORT
 
 WORKDIR /var/www/html
 
@@ -52,7 +59,7 @@ USER root
 
 COPY --chown=www-data:www-data composer.json composer.lock /var/www/html/
 
-#Exclude dev dependencies for production with --no-dev
+# Exclude dev dependencies for production with --no-dev
 RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction
 
 COPY --chown=www-data:www-data . /var/www/html
@@ -79,6 +86,86 @@ RUN php artisan config:cache && \
     php artisan view:cache && \
     php artisan event:cache
 
+# Configure NGINX to listen on 0.0.0.0 and use PORT variable
+# This is required for Render.com and other cloud platforms
+RUN mkdir -p /etc/cont-init.d
+
+# Create init script to configure NGINX with runtime PORT variable
+RUN cat > /etc/cont-init.d/99-configure-nginx <<'EOF'
+#!/command/with-contenv sh
+set -e
+
+echo "Configuring NGINX to listen on 0.0.0.0:${PORT}..."
+
+# Backup original default.conf if it exists
+if [ -f /etc/nginx/conf.d/default.conf ] && [ ! -f /etc/nginx/conf.d/default.conf.bak ]; then
+    cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bak
+fi
+
+# Create NGINX configuration that listens on 0.0.0.0 with PORT variable
+cat > /etc/nginx/conf.d/default.conf <<NGINX_EOF
+server {
+    listen 0.0.0.0:${PORT};
+    listen [::]:${PORT};
+
+    server_name _;
+    root /var/www/html/public;
+    index index.php index.html;
+
+    charset utf-8;
+
+    # Logging
+    access_log /dev/stdout;
+    error_log /dev/stderr;
+
+    # Laravel specific
+    location / {
+        try_files \$uri \$uri/ /index.php?\$query_string;
+    }
+
+    # PHP handling
+    location ~ \.php\$ {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        include fastcgi_params;
+
+        # Additional FastCGI params for Laravel
+        fastcgi_param PATH_INFO \$fastcgi_path_info;
+        fastcgi_param PATH_TRANSLATED \$document_root\$fastcgi_path_info;
+
+        # Increase timeouts for long-running requests
+        fastcgi_read_timeout 300;
+        fastcgi_send_timeout 300;
+    }
+
+    # Deny access to hidden files
+    location ~ /\. {
+        deny all;
+    }
+
+    # Deny access to .php files in storage and bootstrap/cache
+    location ~ ^/(storage|bootstrap\/cache)/.*\.php\$ {
+        deny all;
+    }
+
+    # Static assets caching
+    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)\$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+}
+NGINX_EOF
+
+echo "NGINX configured to listen on 0.0.0.0:${PORT}"
+
+# Test NGINX configuration
+nginx -t
+
+EOF
+
+RUN chmod +x /etc/cont-init.d/99-configure-nginx
+
 # Configure s6-overlay service for Inertia SSR
 RUN mkdir -p /etc/s6-overlay/s6-rc.d/inertia-ssr
 
@@ -89,14 +176,21 @@ RUN echo "longrun" > /etc/s6-overlay/s6-rc.d/inertia-ssr/type
 RUN echo -e "php-fpm\nnginx" > /etc/s6-overlay/s6-rc.d/inertia-ssr/dependencies
 
 # Create run script for the SSR service
-RUN echo -e "#!/command/with-contenv sh\necho \"Starting Inertia SSR server...\"\nexec php /var/www/html/artisan inertia:start-ssr" > /etc/s6-overlay/s6-rc.d/inertia-ssr/run
+RUN cat > /etc/s6-overlay/s6-rc.d/inertia-ssr/run <<'EOF'
+#!/command/with-contenv sh
+echo "Starting Inertia SSR server..."
+cd /var/www/html
+exec s6-setuidgid www-data php artisan inertia:start-ssr
+EOF
+
 RUN chmod +x /etc/s6-overlay/s6-rc.d/inertia-ssr/run
 
 # Add service to user bundle (empty file to register service)
 RUN touch /etc/s6-overlay/s6-rc.d/user/contents.d/inertia-ssr
 
-# Add healthcheck (with start period to allow services to initialize)
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-    CMD curl -f http://127.0.0.1:8080/ || exit 1
+# Add healthcheck
+# Render.com will use PORT env variable at runtime
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD curl -f http://127.0.0.1:${PORT}/ || exit 1
 
 USER www-data
