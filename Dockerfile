@@ -6,21 +6,24 @@ RUN install-php-extensions intl
 USER www-data
 
 FROM node:22.19.0-alpine3.21 AS node-builder
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
 WORKDIR /app
 
 # Copy package files first for caching
-COPY package.json package-lock.json* pnpm-lock.yaml* yarn.lock* ./
+COPY package.json pnpm-lock.yaml* ./
 
 # Install deps
-RUN npm ci --legacy-peer-deps
+RUN pnpm i --frozen-lockfile
 
 # Copy the rest of the frontend
 COPY resources/ resources/
 COPY vite.config.ts ./
 
 # Build frontend
-RUN npm run build
+RUN pnpm build
 
 FROM base AS production
 
