@@ -14,7 +14,8 @@ RUN apk add --no-cache \
     nginx \
     supervisor \
     nodejs \
-    npm
+    npm \
+    && npm install -g corepack
 
 # Install PHP extensions
 RUN docker-php-ext-install \
@@ -42,7 +43,7 @@ RUN echo "opcache.enable=1" >> $PHP_INI_DIR/conf.d/opcache.ini && \
     echo "opcache.revalidate_freq=0" >> $PHP_INI_DIR/conf.d/opcache.ini && \
     echo "opcache.validate_timestamps=0" >> $PHP_INI_DIR/conf.d/opcache.ini
 
-# Enable corepack for pnpm
+# Enable corepack for pnpm (must be after npm installation)
 RUN corepack enable
 
 # Set working directory
