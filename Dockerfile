@@ -1,22 +1,22 @@
-# Stage 1: Build frontend assets with Node.js + PHP
-FROM node:20-alpine AS frontend-builder
+# Stage 1: Build frontend assets with PHP + Node.js
+# Using serversideup/php CLI variant and installing Node.js
+FROM serversideup/php:8.3-cli AS frontend-builder
+
+# Switch to root to install Node.js
+USER root
 
 WORKDIR /app
 
-# Install PHP and Composer (required for @laravel/vite-plugin-wayfinder)
-RUN apk add --no-cache \
-    php83 \
-    php83-phar \
-    php83-mbstring \
-    php83-tokenizer \
-    php83-fileinfo \
-    php83-openssl \
-    php83-curl \
-    php83-json \
-    php83-dom \
-    php83-xml \
-    php83-xmlwriter \
-    composer
+# Install Node.js 20 from NodeSource
+RUN apt-get update && \
+    apt-get install -y ca-certificates curl gnupg && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+    apt-get update && \
+    apt-get install -y nodejs && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Enable corepack for pnpm
 RUN corepack enable
