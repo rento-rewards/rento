@@ -45,10 +45,10 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # 8. Install Node dependencies and build assets
-RUN pnpm install --frozen-lockfile && pnpm run build
+RUN pnpm install --frozen-lockfile && pnpm build:ssr
 
-# 9. Clean up to reduce image size
-RUN rm -rf node_modules /root/.npm /root/.local/share/pnpm
+# 9. Remove dev dependencies but keep production dependencies for SSR
+RUN pnpm install --prod --frozen-lockfile && rm -rf /root/.npm /root/.local/share/pnpm
 
 # 10. Set proper permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
