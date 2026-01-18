@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Trust proxies for HTTPS detection
+# Trust all proxies (Render uses reverse proxy)
 export TRUSTED_PROXIES="*"
 
 # Run migrations
