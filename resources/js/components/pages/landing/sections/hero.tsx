@@ -42,7 +42,7 @@ export default function HeroSection() {
                                 preset="fade-in-blur"
                                 speedSegment={0.3}
                                 as="h1"
-                                className="max-w-md text-5xl font-bold tracking-tighter text-balance md:text-6xl"
+                                className="inline max-w-md text-5xl font-bold tracking-tighter text-balance md:text-6xl whitespace-normal"
                             >
                                 The Credit Builder for Renters
                             </TextEffect>
